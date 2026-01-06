@@ -22,18 +22,6 @@ namespace Infrastructure.Repositories.Interfaces
             await _context.SaveChangesAsync(cancellationToken);
         }
 
-        public async Task UpdateAsync(TEntity entity, CancellationToken cancellationToken)
-        {
-            _dbSet.Update(entity);
-            await _context.SaveChangesAsync(cancellationToken);
-        }
-
-        public async Task DeleteAsync(TEntity entity, CancellationToken cancellationToken)
-        {
-            _dbSet.Remove(entity);
-            await _context.SaveChangesAsync(cancellationToken);
-        }
-
         public virtual async Task<IEnumerable<TEntity>> GetAllAsync(CancellationToken cancellationToken)
         {
             return await _dbSet.ToListAsync(cancellationToken);
@@ -44,6 +32,18 @@ namespace Infrastructure.Repositories.Interfaces
         public virtual async Task<TEntity?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
         {
             return await _dbSet.FindAsync(id, cancellationToken);
+        }
+
+        public async Task UpdateAsync(TEntity entity, CancellationToken cancellationToken)
+        {
+            _dbSet.Update(entity);
+            await _context.SaveChangesAsync(cancellationToken);
+        }
+
+        public async Task DeleteAsync(TEntity entity, CancellationToken cancellationToken)
+        {
+            _dbSet.Remove(entity);
+            await _context.SaveChangesAsync(cancellationToken);
         }
     }
 }

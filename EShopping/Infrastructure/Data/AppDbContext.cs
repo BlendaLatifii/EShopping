@@ -1,0 +1,30 @@
+﻿using Domain.Entities;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+
+namespace Infrastructure.Data
+{
+    public class AppDbContext : IdentityDbContext<User, Role, Guid>
+    {
+
+        public AppDbContext(DbContextOptions<AppDbContext> options) :base(options)
+        {
+
+        }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+
+            builder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
+        }
+
+        public DbSet<User> Users { get; set; }
+        public DbSet<Role> Roles { get; set; }
+        public DbSet<UserRole> UserRoles { get; set; }
+        public DbSet<RefreshToken> RefreshTokens { get; set; }
+        public DbSet<UserResetPassword> UserResetPassword { get; set; }
+        public DbSet<Product> Products { get; set; }
+        public DbSet<OrderStatus> OrderStatuses { get; set; }
+    }
+}

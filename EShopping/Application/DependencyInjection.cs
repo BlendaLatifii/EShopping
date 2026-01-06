@@ -1,16 +1,19 @@
-﻿using Infrastructure.Repositories;
-using Infrastructure.Repositories.Interfaces;
-using Microsoft.Extensions.Configuration;
+﻿using Application.Services;
+using Application.Services.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Application
 {
     public static class DependencyInjection
     {
-        public static async void AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
+
+        public static async void AddApplication(this IServiceCollection services)
         {
-            services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IAuthenticationService, AuthenticationService>();
+            services.AddScoped<ITokenService, TokenService>();
+            services.AddScoped<ICategoryService, CategoryService>();
+            services.AddScoped<IProductService, ProductService>();
+            services.AddScoped<IOrderStatusService, OrderStatusService>();
         }
     }
 }

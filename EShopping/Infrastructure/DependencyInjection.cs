@@ -1,6 +1,22 @@
-﻿namespace Infrastructure
+﻿using Infrastructure.Repositories;
+using Infrastructure.Repositories.Interfaces;
+using Microsoft.Extensions.DependencyInjection;
+
+namespace Infrastructure
 {
     public static class DependencyInjection
     {
+
+        public static async void AddInfrastructure(this IServiceCollection services)
+        {
+            services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IRoleRepository, RoleRepository>();
+            services.AddScoped<IResetPasswordRepository, ResetPasswordRepository>();
+            services.AddScoped<ICategoryRepository, CategoryRepository>();
+            services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<IOrderStatusRepository, OrderStatusRepository>();
+
+        }
     }
 }
