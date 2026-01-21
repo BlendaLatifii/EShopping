@@ -1,8 +1,8 @@
-﻿using Application.DTO.Request;
+﻿using API.Constants;
+using Application.DTO.Request;
+using Application.DTO.Response;
 using Application.Services.Interfaces;
-using Infrastructure.Repositories.Seeds;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -13,10 +13,12 @@ namespace API.Controllers
     {
 
         private readonly IAuthenticationService _authenticationService;
+        private readonly ICookieService _cookieService;
 
-        public AuthenticationController(IAuthenticationService authenticationService)
+        public AuthenticationController(IAuthenticationService authenticationService, ICookieService cookieService)
         {
-          _authenticationService = authenticationService;
+            _authenticationService = authenticationService;
+            _cookieService = cookieService;
         }
 
 
@@ -63,5 +65,12 @@ namespace API.Controllers
             return Ok();
         }
 
+        [HttpPost("refreshToken")]
+        public async Task<ActionResult<RefreshTokenResponseDto>> RefreshToken()
+        {
+            var result = await _authenticationService.RefreshToken(_cookieService.Get(CookieNames.RefreshToken));
+
+            return Ok(result);
+        }
     }
 }

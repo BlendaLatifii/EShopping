@@ -1,0 +1,64 @@
+/* Sidebar */
+.sidebar {
+  min-height: 80vh;
+}
+
+/* Kategori hover */
+.category-item:hover {
+  background-color: #007bff;
+  color: white;
+  font-weight: 500;
+  transition: 0.3s;
+}
+
+/* ProductCard */
+.card {
+  border-radius: 15px;
+  overflow: hidden;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+}
+
+/* Produkt image */
+.product-image-wrapper {
+  height: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  background-color: #f8f9fa;
+}
+
+.product-image {
+  max-height: 100%;
+  max-width: 100%;
+  object-fit: cover;
+}
+
+/* Add to cart button */
+.btn.bg-cart {
+  background-color: #007bff;
+  color: white;
+  border-radius: 50px;
+  padding: 8px 20px;
+  transition: 0.3s;
+}
+
+.btn.bg-cart:hover {
+  background-color: #0056b3;
+  color: white;
+}
+
+/* Teksti i produktit */
+.card-body h6 a {
+  color: #343a40;
+  text-decoration: none;
+}
+
+.card-body h6 a:hover {
+  color: #007bff;
+}

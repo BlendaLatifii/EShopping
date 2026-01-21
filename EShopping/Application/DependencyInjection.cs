@@ -14,6 +14,13 @@ namespace Application
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<IOrderStatusService, OrderStatusService>();
+            services.AddScoped<IPaymentMethodService, PaymentMethodService>();
+            services.AddScoped<ICartItemService, CartItemService>();
+            services.AddScoped<ICartService, CartService>();
+            services.AddScoped<IIdentityService, IdentityService>();
+            services.AddScoped<ICookieService, CookieService>();
+            services.AddScoped<IOrderItemService, OrderItemService>();
+            services.AddScoped<IOrderService, OrderService>();
         }
     }
 }

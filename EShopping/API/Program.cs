@@ -32,11 +32,23 @@ builder.Services.AddIdentity<User, Role>(options =>
 }).AddEntityFrameworkStores<AppDbContext>()
               .AddDefaultTokenProviders();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AccessPolicy",
+        builder =>
+        {
+            builder.AllowAnyHeader()
+                   .AllowAnyMethod()
+                   .AllowAnyOrigin();
+        });
+});
+
 
 builder.Services.AddSwagger();
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure();
 builder.Services.CustomAuthentication(builder.Configuration);
+builder.Services.AddHttpContextAccessor();
 
 var app = builder.Build();
 
@@ -56,6 +68,11 @@ using (var scope = app.Services.CreateScope())
 
     await DbInitializer.SeedAsync(roles, context);
 }
+
+app.UseCors("AccessPolicy");
+
+app.UseStaticFiles();
+
 app.UseHttpsRedirection();
 
 app.UseAuthorization();

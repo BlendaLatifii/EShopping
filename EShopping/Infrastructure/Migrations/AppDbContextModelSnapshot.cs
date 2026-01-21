@@ -22,6 +22,49 @@ namespace Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("Domain.Entities.Cart", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Carts");
+                });
+
+            modelBuilder.Entity("Domain.Entities.CartItem", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CartId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("UnitPrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CartId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("CartItems");
+                });
+
             modelBuilder.Entity("Domain.Entities.Category", b =>
                 {
                     b.Property<Guid>("Id")
@@ -40,6 +83,21 @@ namespace Infrastructure.Migrations
                     b.ToTable("Category");
                 });
 
+            modelBuilder.Entity("Domain.Entities.OrderStatus", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("OrderStatus");
+                });
+
             modelBuilder.Entity("Domain.Entities.Product", b =>
                 {
                     b.Property<Guid>("Id")
@@ -49,10 +107,11 @@ namespace Infrastructure.Migrations
                     b.Property<Guid>("CategoryId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("CategoryId1")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImageUrl")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -66,8 +125,6 @@ namespace Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
-
-                    b.HasIndex("CategoryId1");
 
                     b.ToTable("Products");
                 });
@@ -344,17 +401,43 @@ namespace Infrastructure.Migrations
                     b.HasDiscriminator().HasValue("UserRole");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Product", b =>
+            modelBuilder.Entity("Domain.Entities.Cart", b =>
                 {
-                    b.HasOne("Domain.Entities.Category", "Category")
+                    b.HasOne("Domain.Entities.User", "User")
                         .WithMany()
-                        .HasForeignKey("CategoryId")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Domain.Entities.Category", null)
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Domain.Entities.CartItem", b =>
+                {
+                    b.HasOne("Domain.Entities.Cart", "Cart")
+                        .WithMany("CartItems")
+                        .HasForeignKey("CartId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Cart");
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Product", b =>
+                {
+                    b.HasOne("Domain.Entities.Category", "Category")
                         .WithMany("Products")
-                        .HasForeignKey("CategoryId1");
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Category");
                 });
@@ -434,6 +517,11 @@ namespace Infrastructure.Migrations
                     b.Navigation("Role");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Cart", b =>
+                {
+                    b.Navigation("CartItems");
                 });
 
             modelBuilder.Entity("Domain.Entities.Category", b =>

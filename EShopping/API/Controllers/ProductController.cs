@@ -1,6 +1,5 @@
 ﻿using Application.DTO.Request;
 using Application.DTO.Response;
-using Application.Services;
 using Application.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -34,6 +33,22 @@ namespace API.Controllers
             return Ok(result);
         }
 
+        [HttpGet("/category{categoryId}")]
+        public async Task<ActionResult<List<ProductResponseDto>>> GetProductByCategory(Guid categoryId)
+        {
+            var result = await _productService.GetProductByCategory(categoryId);
+
+            return Ok(result);
+        }
+
+        [HttpGet("/search{searchTerm}")]
+        public async Task<ActionResult<List<ProductResponseDto>>> SearchProduct(string searchTerm)
+        {
+            var result = await _productService.SearchProduct(searchTerm);
+
+            return Ok(result);
+        }
+
         [HttpGet("{id}")]
         public async Task<ActionResult<ProductResponseDto>> GetProductById(Guid id)
         {
@@ -56,6 +71,14 @@ namespace API.Controllers
             await _productService.DeleteProduct(id);
 
             return Ok();
+        }
+
+        [HttpGet("GetProductSelectList")]
+        public async Task<ActionResult<List<ListItemModel>>> GetProductSelectList()
+        {
+            var reuslt = await _productService.GetProductSelectList();
+
+            return Ok(reuslt);
         }
     }
 }

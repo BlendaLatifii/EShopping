@@ -3,6 +3,7 @@ using Application.DTO.Response;
 using Application.Services.Interfaces;
 using Domain.Entities;
 using Infrastructure.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.Services
 {
@@ -91,6 +92,18 @@ namespace Application.Services
             {
                 Name = addCategoryRequestDto.Name,
             };
+        }
+
+        public async Task<List<ListItemModel>> GetCategorySelectList()
+        {
+            var category = await _categoryRepository.Query()
+                .Select(x => new ListItemModel
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                }).ToListAsync();
+
+            return category;
         }
     }
 }

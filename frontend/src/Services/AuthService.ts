@@ -1,11 +1,12 @@
 import axios from "axios";
 import Cookies from "js-cookie";
-import { LoginResponseDto } from "../Interfaces/login-response-dto";
-import { LoginRequestDto } from "../Interfaces/login-request-dto";
-import { AddUserRequestDto } from "../Interfaces/add-user-request-dto";
+import { LoginResponseDto } from "../Interfaces/User/login-response-dto";
+import { LoginRequestDto } from "../Interfaces/User/login-request-dto";
+import { SignInRequestDto } from "../Interfaces/User/Signin-dto";
+import { RefreshTokenResponseDto } from "../Interfaces/User/RefreshTokenResponseDto";
 
 
-export class AuthService {
+export class AuthService { 
 private static BaseUrl = "https://localhost:7147/api/Authentication/";
 public static token: string | null = null;
 public static role: string | null = null;
@@ -17,7 +18,6 @@ try {
         `${AuthService.BaseUrl}login`,
         user
       );
-      console.log(response);
       if (!response.data) {
         return null!;
       }
@@ -27,13 +27,24 @@ try {
       AuthService.token = response.data.token;
 
       return response.data;
-    } catch (e) {
-      console.log('problem');
+    } catch (error : any) {
+      console.log("Login error:", error.response?.data);
+  console.log("Status:", error.response?.status);
       return null!;
     }
 }
 
-public static async SignIn(model : AddUserRequestDto ) :Promise<void>{
-const result = await axios.post(`${this.BaseUrl}`, model);
+public static async SignIn(model : SignInRequestDto ) :Promise<void>{
+const result = await axios.post(`${this.BaseUrl}signin`, model);
+}
+
+public static async RefreshToken() : Promise<RefreshTokenResponseDto> {
+    return await axios.post(`${this.BaseUrl}/refreshToken`, {}, {
+      withCredentials: true 
+    });
+}
+
+public static async GetToken(): Promise<string | null> {
+  return Cookies.get("jwt") || null;
 }
 }

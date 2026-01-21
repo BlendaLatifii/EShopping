@@ -9,12 +9,14 @@ namespace API.Extensions
     {
         public static AuthenticationBuilder CustomAuthentication(this IServiceCollection services, IConfiguration _config)
         {
+            //me identifiku userin
             return services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             }).AddJwtBearer(options =>
             {
+                //kontrollojne tokenin nese eshte real dhe ekziston ne backend
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuer = false,
@@ -24,6 +26,7 @@ namespace API.Extensions
                 };
             }).AddCookie(options =>
             {
+                //secure cookies
                 options.Cookie.HttpOnly = true;
                 options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
             });

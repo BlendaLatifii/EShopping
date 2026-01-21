@@ -1,6 +1,5 @@
 ﻿using Application.DTO.Request;
 using Application.DTO.Response;
-using Application.Services;
 using Application.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -56,6 +55,14 @@ namespace API.Controllers
             await _categoryService.DeleteCategory(id);
 
             return Ok();
+        }
+
+        [HttpGet("GetCategorySelectList")]
+        public async Task<ActionResult<List<ListItemModel>>> GetCategorySelectList()
+        {
+            var reuslt = await _categoryService.GetCategorySelectList();
+
+            return Ok(reuslt);
         }
     }
 }

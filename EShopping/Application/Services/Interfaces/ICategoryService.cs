@@ -10,5 +10,6 @@ namespace Application.Services.Interfaces
         Task<CategoryResponseDto> GetCategoryById(Guid id);
         Task UpdateCategory(Guid id, UpdateCategoryRequestDto updateCategoryRequestDto);
         Task DeleteCategory(Guid id);
+        Task<List<ListItemModel>> GetCategorySelectList();
     }
 }
