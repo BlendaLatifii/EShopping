@@ -60,9 +60,9 @@ namespace API.Controllers
         [HttpGet("GetCategorySelectList")]
         public async Task<ActionResult<List<ListItemModel>>> GetCategorySelectList()
         {
-            var reuslt = await _categoryService.GetCategorySelectList();
+            var result = await _categoryService.GetCategorySelectList();
 
-            return Ok(reuslt);
+            return Ok(result);
         }
     }
 }

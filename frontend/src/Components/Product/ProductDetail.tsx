@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { ProductResponseDto } from "../Interfaces/Product/product-response-dto.ts";
-import { ProductService } from "../Services/ProductService.ts";
+import { ProductResponseDto } from "../../Interfaces/Product/product-response-dto.ts";
+import { ProductService } from "../../Services/ProductService.ts";
 import "./ProductDetail.css";
 import { useParams } from "react-router-dom";
-import Header from "./Header.tsx";
+import Header from "../Header.tsx";
 import ProductImage from "./ProductImage.tsx";
 
 export default function ProductDetail(){

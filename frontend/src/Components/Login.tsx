@@ -12,10 +12,6 @@ function Login() {
 
   const navigate = useNavigate();
 
-  function SendToCategory(id:string){
-    navigate(`/Category`);
-  }
-
  async function submitForm(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     var user: LoginRequestDto = {
@@ -23,6 +19,7 @@ function Login() {
       password: formData.password,
     };
     const response = await AuthService.Login(user);
+    console.log(response);
     navigate("/Category")
   }
 
@@ -89,7 +86,7 @@ function Login() {
         </Form>
 <div className="text-center mt-1">
   <a
-    href="/forgot-password"
+    href="/ForgetPassword"
     className="text-decoration-none small text-muted"
   >
     Forgot your password?

@@ -1,18 +1,19 @@
 import React, { Fragment, useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import Header from "../Components/Header.tsx";
-import { CategoryResponseDto } from "../Interfaces/Category/category-response-dto.ts";
-import { CategoryService } from "../Services/CategoryService.ts";
+import Header from "../Header.tsx";
+import { CategoryResponseDto } from "../../Interfaces/Category/category-response-dto.ts";
+import { CategoryService } from "../../Services/CategoryService.ts";
 import AddCategoryModal from "./AddCategory.tsx";
+import EditCategoryModal from "./EditCategoryModal.tsx";
 
 
 export default function CategoryTable() {
   const [category, setCategory] = useState<CategoryResponseDto[]>([]);
   const [openConfirm,setOpenConfirm] = useState<boolean>(false);
   const [deleteCategoryId, setDeleteCategoryId] = useState<string>("");
-   const [showModal, setShowModal] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [showEdit, setShowEdit] = useState(false);
+  const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(null);
 
-  const navigate =  useNavigate();
   useEffect(() => {
     fetchData();
   }, []);
@@ -22,24 +23,12 @@ export default function CategoryTable() {
       setCategory(result);
   }
 
-  function deleteCategory(id:string) {
-    setOpenConfirm(true);
-    setDeleteCategoryId(id);
-  }
-    async function confirmedDeleteCategory(id:string)
-     {
-      var result = await CategoryService.DeleteCategory(id);
-      setCategory(category.filter((category) => category.id !== id))
-      setOpenConfirm(false);
-      setDeleteCategoryId("");
-     }
-
-  function sendToDetails(id:string ){
-    navigate(`/EditCategory/${id}`)
-  }
-
-  function AddCategory(){
-    navigate(`/AddCategory`)
+  async function confirmedDeleteCategory(id:string)
+  {
+     await CategoryService.DeleteCategory(id);
+    setCategory(category.filter((category) => category.id !== id))
+    setOpenConfirm(false);
+    setDeleteCategoryId("");
   }
 
   return (
@@ -72,7 +61,10 @@ export default function CategoryTable() {
             <td>
               <button
                 className="btn btn-outline-success btn-sm me-2"
-                onClick={() => sendToDetails(item.id!)}
+                onClick={() => {
+                  setSelectedCategoryId(item.id!);
+                  setShowEdit(true);
+                }}
               >
                 Edit
               </button>
@@ -96,6 +88,12 @@ export default function CategoryTable() {
         handleClose={() => setShowModal(false)}
         onCategoryAdded={fetchData}
       />
+      <EditCategoryModal
+       show={showEdit}
+       handleClose={() => setShowEdit(false)}
+       categoryId={selectedCategoryId}
+       onCategoryUpdated={fetchData}
+       />
   </div>
 
   {openConfirm && (

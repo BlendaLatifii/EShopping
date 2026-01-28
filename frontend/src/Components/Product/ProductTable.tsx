@@ -1,7 +1,9 @@
 import { Fragment, useEffect, useState } from "react";
-import { ProductResponseDto } from "../Interfaces/Product/product-response-dto";
-import { ProductService } from "../Services/ProductService.ts";
+import { ProductResponseDto } from "../../Interfaces/Product/product-response-dto.ts";
+import { ProductService } from "../../Services/ProductService.ts";
 import AddProduct from "./AddProduct.tsx";
+import { useNavigate } from "react-router-dom";
+import EditProductModal from "./EditProductModal.tsx";
 
 export default function ProductTable(){
 
@@ -9,15 +11,12 @@ export default function ProductTable(){
     const[openConfirm, setOpenConfirm] = useState<boolean>(false);
     const[deleteProductId, setDeleteProductId] = useState<string>("");
     const [showModal, setShowModal] = useState(false);
+    const [showEdit, setShowEdit] = useState(false);
+    const [selectedProductId, setSelectedProductId] = useState<string | null>(null);
 
     const fetchData = async() => {
         var result = await ProductService.GetAllProducts();
         setProducts(result);
-    }
-
-    function deleteProduct(id:string) {
-        setOpenConfirm(true);
-        setDeleteProductId(id);
     }
 
     async function confirmedDeleteProduct(id:string)
@@ -31,7 +30,13 @@ export default function ProductTable(){
     useEffect(() => {
     fetchData();
     }, []);
+    
+    const navigate =  useNavigate();
 
+    function sendToDetails(id:string ){
+    navigate(`/EditProduct/${id}`)
+    }
+    
     return (
        <Fragment>
          <div className="mt-5 d-flex justify-content-between align-items-center px-4">
@@ -62,12 +67,15 @@ export default function ProductTable(){
             <td>{item.price}</td>
             <td>{item.categoryName}</td>
             <td>
-              {/* <button
+              <button
                 className="btn btn-outline-success btn-sm me-2"
-                onClick={() => sendToDetails(item.id!)}
+                onClick={() => {
+                  setSelectedProductId(item.id!);
+                  setShowEdit(true);
+                }}
               >
                 Edit
-              </button> */}
+              </button>
 
               <button
                 className="btn btn-outline-danger btn-sm"
@@ -88,6 +96,12 @@ export default function ProductTable(){
         handleClose={() => setShowModal(false)}
         onCategoryAdded={fetchData}
       />
+    <EditProductModal
+       show={showEdit}
+       handleClose={() => setShowEdit(false)}
+       productId={selectedProductId}
+       onProductUpdated={fetchData}
+       />
     </div>
 
     {openConfirm && (

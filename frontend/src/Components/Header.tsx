@@ -1,28 +1,35 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Navbar, Nav, Container, Form, FormControl, Button, Badge } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { FaUser, FaHeart, FaShoppingCart } from "react-icons/fa";
+import { FaUser, FaShoppingCart, FaToggleOff, FaAdjust, FaArrowAltCircleRight } from "react-icons/fa";
+import { CartItemService } from "../Services/CartItemService.ts";
 
 export default function Header(){
-  const cartCount = 3;
-  const favoritesCount = 0;
+  const [cartItemCount , setCartItemCount] = useState<number>(0);
 
+  const fetchCarts = async () => {
+    const countCart = await CartItemService.CountCartItems();
+    setCartItemCount(countCart);
+  }
+
+   useEffect(() => {
+      fetchCarts();
+    }, []);
+    
   return (
     <Navbar bg="light" expand="lg" className="shadow-sm">
       <Container>
-        <Navbar.Brand as={Link} to="/">
+        <Navbar.Brand as={Link} to="/HomePage">
           eStore
         </Navbar.Brand>
 
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
-            <Nav.Link as={Link} to="/">Home</Nav.Link>
+            <Nav.Link as={Link} to="/HomePage">Home</Nav.Link>
             <Nav.Link as={Link} to="/Category">Category</Nav.Link>
             <Nav.Link as={Link} to="/Cart">Cart</Nav.Link>
-            <Nav.Link as={Link} to="/checkout">Checkout</Nav.Link>
 
-            <Nav.Link as={Link} to="/contact">Contact</Nav.Link>
           </Nav>
 
           <Form className="d-flex me-3">
@@ -36,26 +43,20 @@ export default function Header(){
           </Form>
 
           <div className="d-flex align-items-center gap-3">
-            <Link to="/profile" className="text-dark position-relative">
+            <Link to="/MyProfile" className="text-dark position-relative">
               <FaUser size={20} />
             </Link>
 
-            <Link to="/favorites" className="text-dark position-relative">
-              <FaHeart size={20} />
-              {favoritesCount > 0 && (
+            <Link to="/Cart" className="text-dark position-relative">
+              <FaShoppingCart size={20} />
+              {cartItemCount > 0 && (
                 <Badge bg="danger" pill className="position-absolute top-0 start-100 translate-middle">
-                  {favoritesCount}
+                  {cartItemCount}
                 </Badge>
               )}
             </Link>
-
-            <Link to="/cart" className="text-dark position-relative">
-              <FaShoppingCart size={20} />
-              {cartCount > 0 && (
-                <Badge bg="danger" pill className="position-absolute top-0 start-100 translate-middle">
-                  {cartCount}
-                </Badge>
-              )}
+            <Link to="/" className="text-dark position-relative">
+              <FaArrowAltCircleRight size={20} />
             </Link>
           </div>
         </Navbar.Collapse>

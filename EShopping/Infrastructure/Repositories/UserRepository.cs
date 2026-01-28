@@ -39,6 +39,15 @@ namespace Infrastructure.Repositories
                 .FirstAsync();
         }
 
+        public async Task<User?> GetUserByUserId(Guid userId)
+        {
+            return await _dbSet
+                .Where(x => x.Id == userId)
+                .Include(x => x.UserRoles)
+                    .ThenInclude(x => x.Role)
+                .FirstOrDefaultAsync();
+        }
+
         public async Task AddRefreshToken(RefreshToken refreshToken)
         {
             _context.RefreshTokens.Add(refreshToken);

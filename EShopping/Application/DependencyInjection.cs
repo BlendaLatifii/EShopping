@@ -10,6 +10,7 @@ namespace Application
         public static async void AddApplication(this IServiceCollection services)
         {
             services.AddScoped<IAuthenticationService, AuthenticationService>();
+            services.AddScoped<IUserService, AuthenticationService>();
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IProductService, ProductService>();
@@ -21,6 +22,7 @@ namespace Application
             services.AddScoped<ICookieService, CookieService>();
             services.AddScoped<IOrderItemService, OrderItemService>();
             services.AddScoped<IOrderService, OrderService>();
+            services.AddScoped<IRoleService, RoleService>();
         }
     }
 }
