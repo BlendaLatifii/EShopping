@@ -1,6 +1,5 @@
 ﻿using Application.DTO.Response;
 using Application.Services.Interfaces;
-using Domain.Entities;
 using Infrastructure.Repositories.Interfaces;
 
 namespace Application.Services
@@ -9,54 +8,21 @@ namespace Application.Services
     {
 
         private readonly ICartRepository _cartRepository;
-        private readonly ICartItemRepository _itemRepository;
+        private readonly IIdentityService _identityService;
+        private readonly IOrderService _orderService;
         
-        public CartService(ICartRepository cartRepository, ICartItemRepository itemRepository) 
+        public CartService(ICartRepository cartRepository, IIdentityService identityService, IOrderService orderService) 
         { 
             _cartRepository = cartRepository;
-            _itemRepository = itemRepository;
+            _identityService = identityService;
+            _orderService = orderService;
         }
 
-        public async Task AddToCartAsync(Guid userId, Guid productId, int quantity =1)
+        //duhet me u kthy cartdto edhe orderresponseDto 
+        //me u thirr edhe dy metodat cart e order 
+        public async Task<CartDto> GetCartAsync() 
         {
-            var cart =  await _cartRepository.GetCartByUserId(userId);
-
-            if (cart == null)
-            {
-                 cart = new Cart 
-                 {
-                     UserId = userId 
-                 };
-
-                await _cartRepository.AddAsync(cart, CancellationToken.None);
-            }
-
-            var product = cart.CartItems.Select(x => x.Product).Where(x => x.Id == productId).FirstOrDefault();
-            if (product == null)
-                throw new Exception("Product not found");
-
-            var cartItem = cart.CartItems
-                .FirstOrDefault(x => x.ProductId == productId);
-
-            if (cartItem != null)
-            {
-                cartItem.Quantity += quantity;
-            }
-            else
-            {
-                var newCartItem = new CartItem
-                {
-                    ProductId = productId,
-                    Quantity = quantity,
-                    UnitPrice = product.Price,
-                    CartId = cart.Id
-                };
-                await _itemRepository.AddAsync(newCartItem, CancellationToken.None);
-            }
-        }
-
-        public async Task<CartDto> GetCartAsync(Guid userId)
-        {
+            var userId = _identityService.GetCurrentUserId();
             var cart = await _cartRepository.GetCartByUserId(userId);
             if (cart == null)
             {
@@ -67,7 +33,6 @@ namespace Application.Services
                 };
             }
 
-
             return new CartDto
             {
                 Id = cart.Id,
@@ -77,13 +42,12 @@ namespace Application.Services
                     ProductId = ci.ProductId,
                     ProductName = ci.Product.Name,
                     ImageUrl = ci.Product.ImageUrl,
-                    UnitPrice = ci.UnitPrice,
+                    UnitPrice = ci.Product.Price,
                     Quantity = ci.Quantity,
-                    TotalPrice = ci.TotalPrice
+                    TotalPrice = ci.Product.Price * ci.Quantity
                 }).ToList(),
-                TotalPrice = cart.CartItems.Sum(x => x.TotalPrice)
+                TotalPrice = cart.CartItems.Sum(x => (x.Product.Price * x.Quantity))
             };
         }
-
     }
 }

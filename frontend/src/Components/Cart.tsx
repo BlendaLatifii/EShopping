@@ -3,10 +3,13 @@ import Header from "../Components/Header.tsx";
 import { CartDto } from "../Interfaces/CartDto.ts";
 import { CartItemService } from "../Services/CartItemService.ts";
 import { CartService } from "../Services/CartService.ts";
-import { UpdateCartItemRequestDto } from "../Interfaces/CartItem/update-cartItem-request-dto.ts";
+import { OrderService } from "../Services/OrderService.ts";
+import "./Cart.css";
+import { OrderResponseDto } from "../Interfaces/Order/order-response-dto.ts";
 
 export default function Cart() {
   const [cart, setCart] = useState<CartDto | null>(null);
+  const [order, setOrder] = useState<OrderResponseDto | null>(null);
 
   const fetchCart = async () => {
     try {
@@ -17,8 +20,15 @@ export default function Cart() {
     }
   };
 
+  const loadOrders = async () => {
+    const data = await OrderService.GetOrderOfUser();
+    console.log(data);
+    setOrder(data);
+  };
+
   useEffect(() => {
     fetchCart();
+    loadOrders();
   }, []);
 
   const updateQuantity = async (id: string, qty: number) => {
@@ -26,12 +36,14 @@ export default function Cart() {
     console.log(id, qty);
     await CartItemService.UpdateCartItem(id, qty);
     fetchCart();
+    loadOrders();
   };
 
   const removeItem = async (id: string) => {
     console.log(id);
     await CartItemService.DeleteCartItem(id);
     fetchCart();
+    loadOrders();
   };
 
   if (!cart || cart.items.length === 0) {
@@ -48,25 +60,28 @@ export default function Cart() {
   return (
     <>
       <Header />
+     <div className="page-bg">
+  <div className="container cart-container">
+    <div className="row">
 
-      <div className="container cart-container">
-        <h2 className="mb-4">Shopping Cart</h2>
+      <div className="col-lg-8 col-md-12">
+        <h3 className="mb-3">My Cart</h3>
 
         <div className="table-responsive">
           <table className="table table-bordered align-middle text-center">
-            <thead className="table-dark">
+            <thead>
               <tr>
                 <th>Image</th>
                 <th>Product</th>
                 <th>Price</th>
                 <th>Quantity</th>
                 <th>Total</th>
-                <th>Actions</th>
+                <th></th>
               </tr>
             </thead>
 
             <tbody>
-              {cart.items.map((item) => (
+              {cart?.items.map(item => (
                 <tr key={item.id}>
                   <td>
                     <img
@@ -76,35 +91,25 @@ export default function Cart() {
                           : "/images/no-image.png"
                       }
                       className="cart-image"
-                      alt={item.productName}
                     />
                   </td>
 
                   <td>{item.productName}</td>
-
                   <td>${item.unitPrice.toFixed(2)}</td>
 
                   <td>
-                    <div className="d-flex justify-content-center align-items-center">
+                    <div className="d-flex justify-content-center">
                       <button
-                        className="btn btn-sm btn-outline-secondary me-2"
-                        onClick={() =>
-                          updateQuantity(item.id, item.quantity - 1)
-                        }
-                      >
-                        -
-                      </button>
+                        className="btn btn-outline-secondary me-2"
+                        onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                      >-</button>
 
                       <span>{item.quantity}</span>
 
                       <button
-                        className="btn btn-sm btn-outline-secondary ms-2"
-                        onClick={() =>
-                          updateQuantity(item.id, item.quantity + 1)
-                        }
-                      >
-                        +
-                      </button>
+                        className="btn btn-outline-secondary ms-2"
+                        onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                      >+</button>
                     </div>
                   </td>
 
@@ -124,16 +129,59 @@ export default function Cart() {
           </table>
         </div>
 
-        <div className="text-end mt-4">
-          <h4>
-            Total Price: <span className="text-success">${cart.totalPrice.toFixed(2)}</span>
-          </h4>
-
-          <button className="btn btn-primary mt-3">
-            Proceed to Checkout
-          </button>
+        <div className="text-end mt-3">
+          <h4>Total: <b>${cart?.totalPrice.toFixed(2)}</b></h4>
         </div>
       </div>
+
+      <div className="col-lg-4 col-md-12">
+        {order ? (
+          <>
+            <h3 className="mb-3">Order Summary</h3>
+
+            <div className="card shadow-sm">
+              <div className="card-body">
+                <h6 className="text-muted">Order #{order.id}</h6>
+
+                <ul className="list-group list-group-flush mb-3">
+                  {order.items.map((item, i) => (
+                    <li
+                      key={i}
+                      className="list-group-item d-flex justify-content-between"
+                    >
+                      <span>
+                        {item.productName} × {item.quantity}
+                      </span>
+                      <span>${item.totalPrice}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                <h5 className="text-end">
+                  Total: <b>${order.totalAmmount}</b>
+                </h5>
+                <button>
+                  <h5 className="text-end">
+                  Go to Payment
+                  </h5>
+                </button>
+              </div>
+            </div>
+          </>
+        ) : (
+          <div className="card shadow-sm">
+            <div className="card-body text-center text-muted">
+              <p>No order yet</p>
+              <small>Complete checkout to see order summary</small>
+            </div>
+          </div>
+        )}
+      </div>
+
+    </div>
+  </div>
+</div>
+
     </>
   );
 }

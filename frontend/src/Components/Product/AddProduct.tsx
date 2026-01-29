@@ -1,9 +1,9 @@
 import { Button, Form, Modal } from "react-bootstrap";
 import { useEffect, useState } from "react";
-import { ProductService } from "../Services/ProductService.ts";
-import { CategoryService } from "../Services/CategoryService.ts";
-import { SelectListItem } from "../Interfaces/select-list-item";
-import { AddProductRequestDto } from "../Interfaces/Product/add-product-dto";
+import { ProductService } from "../../Services/ProductService.ts";
+import { CategoryService } from "../../Services/CategoryService.ts";
+import { SelectListItem } from "../../Interfaces/select-list-item.ts";
+import { AddProductRequestDto } from "../../Interfaces/Product/add-product-dto.ts";
 
 interface Props {
   show: boolean;

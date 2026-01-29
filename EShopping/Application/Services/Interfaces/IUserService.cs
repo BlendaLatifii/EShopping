@@ -1,4 +1,5 @@
-﻿using Application.DTO.Response;
+﻿using Application.DTO.Request;
+using Application.DTO.Response;
 
 namespace Application.Services.Interfaces
 {
@@ -6,5 +7,8 @@ namespace Application.Services.Interfaces
     {
         Task<List<UserResponseDto>> GetAllAsync(CancellationToken cancellationToken);
         Task<UserResponseDto> GetByIdAsync(Guid id, CancellationToken cancellationToken);
+        Task<UserResponseDto> GetUserDetail();
+        Task UpdateUser(Guid id, UpdateUserRequestDto updateUserRequestDto);
+        Task DeleteUser(Guid id);
     }
 }

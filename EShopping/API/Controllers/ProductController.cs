@@ -41,10 +41,10 @@ namespace API.Controllers
             return Ok(result);
         }
 
-        [HttpGet("/search{searchTerm}")]
-        public async Task<ActionResult<List<ProductResponseDto>>> SearchProduct(string searchTerm)
+        [HttpGet("/search")]
+        public async Task<ActionResult<List<ProductResponseDto>>> SearchProduct([FromQuery]string? searchTerm, [FromQuery] string? sortBy)
         {
-            var result = await _productService.SearchProduct(searchTerm);
+            var result = await _productService.SearchProduct(searchTerm,sortBy);
 
             return Ok(result);
         }

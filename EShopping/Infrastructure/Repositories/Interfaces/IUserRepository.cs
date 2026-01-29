@@ -8,6 +8,7 @@ namespace Infrastructure.Repositories.Interfaces
         Task<User> GetUserWithRole(Guid id, CancellationToken cancellationToken);
         Task AddRefreshToken(RefreshToken refreshToken);
         Task<User> GetUserByEmail(string email);
+        Task<User?> GetUserByUserId(Guid userId);
         IQueryable<RefreshToken> GetAllRefreshTokenAsQueryable();
     }
 }

@@ -1,8 +1,10 @@
-﻿namespace Application.DTO.Request
+﻿using Microsoft.AspNetCore.Http;
+
+namespace Application.DTO.Request
 {
     public class UpdateProductRequestDto
     {
-        public string? ImageUrl { get; set; }
+        public List<IFormFile>? Images { get; set; }
         public string? Name { get; set; }
         public string? Description { get; set; }
         public decimal? Price { get; set; }

@@ -2,8 +2,8 @@
 
 namespace Application.Services.Interfaces
 {
-    public interface ICartService
+    public interface IRoleService
     {
-       Task<CartDto> GetCartAsync();
+        Task<List<ListItemModel>> GetRoleSelectList();
     }
 }

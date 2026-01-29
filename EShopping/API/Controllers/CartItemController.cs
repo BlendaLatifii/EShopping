@@ -1,6 +1,5 @@
 ﻿using Application.DTO.Request;
 using Application.DTO.Response;
-using Application.Services;
 using Application.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,9 +12,9 @@ namespace API.Controllers
 
         private readonly ICartItemService _cartItemService;
 
-        public CartItemController(ICartItemService cartItemService) 
+        public CartItemController(ICartItemService cartItemService)
         {
-            _cartItemService = cartItemService;    
+            _cartItemService = cartItemService;
         }
 
         [HttpPost]
@@ -48,6 +47,14 @@ namespace API.Controllers
             await _cartItemService.UpdateCartItem(id, requestDto.Quantity);
 
             return Ok();
+        }
+
+        [HttpGet("count-carts")]
+        public async Task<ActionResult<int>> CountCartItems()
+        {
+           int cartItems = await _cartItemService.CountCartItems();
+
+           return Ok(cartItems);
         }
 
         [HttpDelete("{id}")]

@@ -19,14 +19,17 @@ namespace Application.Services
         private readonly ITokenService _tokenService;
         private readonly IRoleRepository _roleRepository;
         private readonly IResetPasswordRepository _resetPasswordRepository;
+        private readonly IIdentityService _identityService;
 
-        public AuthenticationService(IUserRepository userRepository, UserManager<User> userManager, ITokenService tokenService, IRoleRepository roleRepository, IResetPasswordRepository resetPasswordRepository)
+
+        public AuthenticationService(IUserRepository userRepository, UserManager<User> userManager, ITokenService tokenService, IRoleRepository roleRepository, IResetPasswordRepository resetPasswordRepository, IIdentityService identityService)
         {
             _userRepository = userRepository;
             _userManager = userManager;
             _tokenService = tokenService;
             _roleRepository = roleRepository;
             _resetPasswordRepository = resetPasswordRepository;
+            _identityService = identityService;
         }
 
         public async Task<List<UserResponseDto>> GetAllAsync(CancellationToken cancellationToken)
@@ -49,6 +52,21 @@ namespace Application.Services
             var userToReturn = MapToUserResponseDto(user);
 
             return userToReturn;
+        }
+
+        public async Task<UserResponseDto> GetUserDetail()
+        {
+            var userId = _identityService.GetCurrentUserId();
+
+            var user = await _userRepository.GetUserByUserId(userId);
+            if(user == null)
+            {
+                throw new Exception("User not found");
+            }
+
+            var model = MapToUserResponseDto(user);
+
+            return model;
         }
 
         public async Task SignIn(SignInRequestDto userRequestDto)
@@ -82,8 +100,8 @@ namespace Application.Services
 
         public async Task UpdateUser(Guid id, UpdateUserRequestDto updateUserRequestDto)
         {
-            var user = await _userManager.FindByIdAsync(id.ToString());
-            if(user == null)
+            var user = await _userRepository.GetUserWithRole(id, CancellationToken.None);
+            if (user == null)
             {
                 throw new Exception("User not found");
             }
@@ -281,9 +299,11 @@ namespace Application.Services
         {
             return new UserResponseDto
             {
+                Id =  user.Id,
                 Email = user.Email,
                 UserName = user.UserName,
                 LastName = user.LastName,
+                RoleName = user.UserRoles.FirstOrDefault()?.Role?.Name,
                 PhoneNumber = user.PhoneNumber
             };
         }

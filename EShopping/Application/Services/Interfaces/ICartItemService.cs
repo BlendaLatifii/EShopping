@@ -10,5 +10,6 @@ namespace Application.Services.Interfaces
         Task<CartItemResponseDto> GetCartItemById(Guid id);
         Task UpdateCartItem(Guid id, int quantity);
         Task DeleteCartItem(Guid id);
+        Task<int> CountCartItems();
     }
 }

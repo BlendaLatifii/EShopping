@@ -12,29 +12,16 @@ namespace API.Controllers
     {
 
         private readonly ICartService _cartService;
-        private readonly IIdentityService _identityService;
 
-        public CartController(ICartService cartService, IIdentityService identityService)
+        public CartController(ICartService cartService)
         {
             _cartService = cartService;
-            _identityService = identityService;
-        }
-
-        [HttpPost]
-        public async Task<ActionResult> AddToCartAsync([FromBody]Guid productId, int quantity)
-        {
-            var userId = _identityService.GetCurrentUserId();
-
-            await _cartService.AddToCartAsync(userId, productId, quantity);
-            return Ok();
         }
 
         [HttpGet]
         public async Task<ActionResult<CartDto>> GetCartAsync()
         {
-            var userId = _identityService.GetCurrentUserId();
-
-            var cart = await _cartService.GetCartAsync(userId);
+            var cart = await _cartService.GetCartAsync();
             return Ok(cart);
         }
     }

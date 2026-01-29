@@ -30,12 +30,12 @@ private static BaseUrl = "https://localhost:7147/api/Product";
 }
 
 
-  public static async GetAllProducts() : Promise<ProductResponseDto[]>{
-    var result = await axios.get(this.BaseUrl);
-    return result.data;
- }
+public static async GetAllProducts() : Promise<ProductResponseDto[]>{
+ var result = await axios.get(this.BaseUrl);
+  return result.data;
+}
 
-  public static async GetProductByCategory(categoryId : string) : Promise<ProductResponseDto[]>{
+public static async GetProductByCategory(categoryId : string) : Promise<ProductResponseDto[]>{
     var result = await axios.get(`${this.BaseUrl}/${categoryId}`);
     return result.data;
  }
@@ -53,8 +53,12 @@ private static BaseUrl = "https://localhost:7147/api/Product";
     await axios.delete(`${this.BaseUrl}/${id}`);
  }
 
- public static async SearchProduct(searchTerm : string) : Promise<ProductResponseDto[]>{
-    var result = await axios.get(`${this.BaseUrl}/${searchTerm}`);
+ public static async SearchProduct(searchTerm? : string, sortBy? : string) : Promise<ProductResponseDto[]>{
+    var result = await axios.get(`${this.BaseUrl}/search`,{
+      params: {
+        searchTerm, sortBy
+      },
+    });
     return result.data;
  }
 

@@ -1,6 +1,7 @@
 export interface UpdateProductRequestDto{
-    name:string;
-    description:string;
-    price:number;
-    categoryId:string;
+    images:File[] | null;
+    name:string |  null;
+    description:string | null;
+    price:number | null;
+    categoryId:string | null;
 }

@@ -90,18 +90,39 @@ namespace Application.Services
                 throw new Exception("Product not found");
             }
 
-            product = MapUpdateProduct(product, updateProductRequestDto);
+            product = await MapUpdateProduct(product, updateProductRequestDto);
 
             await _productRepository.UpdateAsync(product, CancellationToken.None);
         }
 
-        private Product MapUpdateProduct(Product product, UpdateProductRequestDto updateProductRequestDto)
+        private async Task<Product> MapUpdateProduct(Product product, UpdateProductRequestDto dto)
         {
-            product.ImageUrl = updateProductRequestDto.ImageUrl ?? product.ImageUrl;
-            product.Name = updateProductRequestDto.Name ?? product.Name;
-            product.Description = updateProductRequestDto.Description ?? product.Description;
-            product.Price = updateProductRequestDto.Price ?? product.Price;
-            product.CategoryId = (Guid)(updateProductRequestDto.CategoryId != null ? updateProductRequestDto.CategoryId : product.CategoryId);
+            product.Name = dto.Name ?? product.Name;
+            product.Description = dto.Description ?? product.Description;
+            product.Price = dto.Price ?? product.Price;
+            product.CategoryId = dto.CategoryId ?? product.CategoryId;
+
+            //&& dto.Images.Count > 0
+            if (dto.Images != null)
+            {
+                
+                var imageUrls = new List<string>();
+                foreach (var file in dto.Images)
+                {
+                    var fileName = Path.GetExtension(file.FileName);
+                    var filePath = Path.Combine("wwwroot/images/products", fileName);
+
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await file.CopyToAsync(stream);
+                    }
+
+                    imageUrls.Add("/images/products/" + fileName);
+                }
+
+                
+                product.ImageUrl = string.Join(",", imageUrls);
+            }
 
             return product;
         }
@@ -117,24 +138,34 @@ namespace Application.Services
             await _productRepository.DeleteAsync(product, CancellationToken.None);
         }
 
-        public async Task<List<ProductResponseDto>> SearchProduct(string searchTerm)
+        public async Task<List<ProductResponseDto>> SearchProduct(string? searchTerm, string? sortBy)
         {
-            var model = new List<ProductResponseDto>();
+            var query = _productRepository.Query()
+                .Include(x => x.Category)
+                .AsQueryable();
 
-            if (string.IsNullOrWhiteSpace(searchTerm))
+            if (!string.IsNullOrWhiteSpace(searchTerm))
             {
-                return model; 
+                searchTerm = searchTerm.ToLower();
+
+                query = query.Where(x =>
+                    x.Name.ToLower().Contains(searchTerm) ||
+                    x.Description.ToLower().Contains(searchTerm) ||
+                    x.Category.Name.ToLower().Contains(searchTerm));
             }
 
-            var products = await _productRepository.Query()
-                .Include(x => x.Category)
-                .Where(x => x.Name.ToLower().Contains(searchTerm) || x.Description.ToLower().Contains(searchTerm)
-                || x.Category.Name.ToLower().Contains(searchTerm))
-                .ToListAsync();
+            query = sortBy switch
+            {
+                "price-asc" => query.OrderBy(x => x.Price),
+                "price-desc" => query.OrderByDescending(x => x.Price),
+                _ => query
+            };
 
-            model = products.Select(x => MapToDto(x)).ToList();
+           var products = await query.ToListAsync();
 
-            return model;
+           var model = products.Select(x => MapToDto(x)).ToList();
+
+           return model;
         }
 
         private ProductResponseDto MapToDto(Product product)

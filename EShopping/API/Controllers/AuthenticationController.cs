@@ -14,13 +14,16 @@ namespace API.Controllers
 
         private readonly IAuthenticationService _authenticationService;
         private readonly ICookieService _cookieService;
+        private readonly IUserService _userService;
+        private readonly IRoleService _roleService;
 
-        public AuthenticationController(IAuthenticationService authenticationService, ICookieService cookieService)
+        public AuthenticationController(IAuthenticationService authenticationService, ICookieService cookieService, IUserService userService, IRoleService roleService)
         {
             _authenticationService = authenticationService;
             _cookieService = cookieService;
+            _userService = userService;
+            _roleService = roleService;
         }
-
 
         [AllowAnonymous]
         [HttpPost("login")]
@@ -43,6 +46,54 @@ namespace API.Controllers
         public async Task<ActionResult> AddUser(AddUserRequestDto userRequestDto)
         {
             await _authenticationService.AddUser(userRequestDto);
+
+            return Ok();
+        }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult> UpdateUser([FromRoute]Guid id, [FromBody]UpdateUserRequestDto updateUserRequestDto)
+        {
+            await _userService.UpdateUser(id, updateUserRequestDto);
+
+            return Ok();
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<List<UserResponseDto>>> GetAll()
+        {
+            var result = await _userService.GetAllAsync(CancellationToken.None);
+
+            return Ok(result);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<UserResponseDto>> GetUserById(Guid id)
+        {
+            var result = await _userService.GetByIdAsync(id, CancellationToken.None);
+
+            return Ok(result);
+        }
+
+        [HttpGet("user-profile")]
+        public async Task<ActionResult<UserResponseDto>> GetUserDetail()
+        {
+            var result = await _userService.GetUserDetail();
+
+            return Ok(result);
+        }
+
+        [HttpGet("get-role-select-list")]
+        public async Task<ActionResult<List<ListItemModel>>> GetRoleSelectList()
+        {
+            var result = await _roleService.GetRoleSelectList();
+
+            return Ok(result);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteUser(Guid id)
+        {
+            await _userService.DeleteUser(id);
 
             return Ok();
         }
