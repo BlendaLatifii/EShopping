@@ -100,11 +100,11 @@ namespace API.Controllers
 
         [AllowAnonymous]
         [HttpPost("request-reset-password")]
-        public async Task<ActionResult<string>> RequestResetPassword(string email)
+        public async Task<ActionResult> RequestResetPassword([FromBody]ForgetPasswordRequestDto forgetPassword)
         {
-          var result =  await _authenticationService.RequestResetPassword(email);
+           await _authenticationService.RequestResetPassword(forgetPassword.Email);
 
-           return Ok(result);
+           return Ok();
         }
 
         [AllowAnonymous]

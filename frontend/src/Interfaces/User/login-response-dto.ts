@@ -3,4 +3,5 @@ export interface LoginResponseDto{
   email: string;
   token: string;
   refreshToken:string;
+  role:string;
 }

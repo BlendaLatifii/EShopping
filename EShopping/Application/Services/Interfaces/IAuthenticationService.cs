@@ -9,7 +9,7 @@ namespace Application.Services.Interfaces
         Task<RefreshTokenResponseDto> RefreshToken(string refreshToken);
         Task SignIn(SignInRequestDto userRequestDto);
         Task AddUser(AddUserRequestDto userRequestDto);
-        Task<string> RequestResetPassword(string email);
+        Task RequestResetPassword(string email);
         Task ResetPassword(ResetPasswordRequestDto resetPasswordRequestDto);
     }
 }

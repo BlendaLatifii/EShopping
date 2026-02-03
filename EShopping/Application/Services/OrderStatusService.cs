@@ -18,6 +18,13 @@ namespace Application.Services
 
         public async Task AddOrderStatus(AddOrderStatusRequestDto addOrderStatusRequestDto)
         {
+            var allOrderStatuses = await _orderStatusRepository.GetAllAsync(CancellationToken.None);
+
+            if(addOrderStatusRequestDto.DefaultStatus && allOrderStatuses.Any(o => o.DefaultStatus))
+            {
+                throw new Exception("Only one order is default status");
+            }
+
             var orderStatus = MapToEntity(addOrderStatusRequestDto);
 
             await _orderStatusRepository.AddAsync(orderStatus, CancellationToken.None);
@@ -53,7 +60,23 @@ namespace Application.Services
                 throw new Exception("OrderStatus not found");
             }
 
+            var allOrderStatuses = await _orderStatusRepository.GetAllAsync(CancellationToken.None);
+            if (updateOrderStatusRequestDto.DefaultStatus && allOrderStatuses.Any(o => o.DefaultStatus))
+            {
+                throw new Exception("Only one order is default status");
+            }
+
+            orderStatus = MapUpdateOrderStatus(orderStatus, updateOrderStatusRequestDto);
+
             await _orderStatusRepository.UpdateAsync(orderStatus,CancellationToken.None);
+        }
+
+        private OrderStatus MapUpdateOrderStatus(OrderStatus orderStatus, UpdateOrderStatusRequestDto updateOrderStatusRequestDto)
+        {
+            orderStatus.Name = updateOrderStatusRequestDto.Name ?? orderStatus.Name;
+            orderStatus.DefaultStatus = updateOrderStatusRequestDto.DefaultStatus;
+
+            return orderStatus;
         }
 
         public async Task DeleteOrderStatus(Guid id)
@@ -72,7 +95,8 @@ namespace Application.Services
             return new OrderStatusResponseDto
             {
                 Id = orderStatus.Id,
-                Name = orderStatus.Name
+                Name = orderStatus.Name,
+                DefaultStatus = orderStatus.DefaultStatus
             };
         }
 
@@ -81,6 +105,7 @@ namespace Application.Services
             return new OrderStatus
             {
                 Name = entity.Name,
+                DefaultStatus = entity.DefaultStatus,
             };
         }
     }

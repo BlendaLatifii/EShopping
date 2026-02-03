@@ -4,6 +4,7 @@ import "./HomePage.css";
 import { Link } from "react-router-dom";
 import { CategoryResponseDto } from "../Interfaces/Category/category-response-dto.ts";
 import { CategoryService } from "../Services/CategoryService.ts";
+import Footer from "./Footer.tsx";
 
 export default function Home() {
     const[categories, setCategories] = useState<CategoryResponseDto[]>([]); 
@@ -88,6 +89,7 @@ export default function Home() {
           </div>
         </div>
       </section>
+      <Footer/>
     </>
   );
 }

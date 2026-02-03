@@ -10,5 +10,6 @@ namespace Application.Services.Interfaces
         Task<PaymentMethodResponseDto> GetPaymentMethodById(Guid id);
         Task UpdatePaymentMethod(Guid id, UpdatePaymentMethodRequestDto updatePaymentMethodRequestDto);
         Task DeletePaymentMethod(Guid id);
+        Task<List<ListItemModel>> GetPaymentMethodSelectList();
     }
 }

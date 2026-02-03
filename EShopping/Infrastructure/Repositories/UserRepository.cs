@@ -17,7 +17,7 @@ namespace Infrastructure.Repositories
         {
             return await _dbSet
                 .Include(x => x.UserRoles)
-                .ThenInclude(x => x.Role)
+                   .ThenInclude(x => x.Role)
                 .ToListAsync(cancellationToken);
         }
 
@@ -26,7 +26,7 @@ namespace Infrastructure.Repositories
             return await _dbSet
                 .Where(x => x.Id == id)
                 .Include(x => x.UserRoles)
-                .ThenInclude(x => x.Role)
+                   .ThenInclude(x => x.Role)
                 .FirstAsync(cancellationToken);
         }
 
@@ -35,7 +35,7 @@ namespace Infrastructure.Repositories
             return await _dbSet
                 .Where(x => x.Email == email)
                 .Include(x => x.UserRoles)
-                .ThenInclude(x => x.Role)
+                   .ThenInclude(x => x.Role)
                 .FirstAsync();
         }
 

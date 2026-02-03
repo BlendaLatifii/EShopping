@@ -28,8 +28,10 @@ try {
       }
       Cookies.set("jwt", response.data.token);
       Cookies.set("refreshToken", response.data.refreshToken);
+      Cookies.set("role", response.data.role);
       AuthService.refreshToken = response.data.refreshToken;
       AuthService.token = response.data.token;
+      AuthService.role = response.data.role;
 
       return response.data;
     } catch (error : any) {
@@ -47,8 +49,10 @@ public static LogOut(): void {
     console.log('logged out');
     Cookies.remove("jwt");
     Cookies.remove("refreshToken");
+    Cookies.remove("role");
 
     AuthService.token = null;
+    AuthService.refreshToken = null;
     AuthService.role = null;
   }
 public static async RefreshToken() : Promise<RefreshTokenResponseDto> {
@@ -61,13 +65,16 @@ public static async GetToken(): Promise<string | null> {
   return Cookies.get("jwt") || null;
 }
 
+public static isAdmin() : boolean{
+  return Cookies.get("role") === "Admin";
+}
+
 public static async AddUser(model : AddUserRequestDto) : Promise<void>{
   await axios.post(`${this.BaseUrl}/add-user`, model);
 }
 
-public static async RequestResetPassword(email : string): Promise<string>{
+public static async RequestResetPassword(email : string): Promise<void>{
   const result = await axios.post(`${this.BaseUrl}/request-reset-password`, {email});
-  return result.data;
 }
 
 public static async ResetPassword(model : RequestResetPassword) : Promise<void>{

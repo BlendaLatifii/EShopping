@@ -46,7 +46,7 @@ namespace Application.Services
                     Quantity = ci.Quantity,
                     TotalPrice = ci.Product.Price * ci.Quantity
                 }).ToList(),
-                TotalPrice = cart.CartItems.Sum(x => (x.Product.Price * x.Quantity))
+                TotalPrice = cart.CartItems.Sum(x => (x.Product.Price * x.Quantity)),
             };
         }
     }

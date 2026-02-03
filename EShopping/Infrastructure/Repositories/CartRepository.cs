@@ -1,4 +1,5 @@
 ﻿using Domain.Entities;
+using Domain.Enums;
 using Infrastructure.Data;
 using Infrastructure.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -17,7 +18,7 @@ namespace Infrastructure.Repositories
                 .Include(x => x.User)
                 .Include(x => x.CartItems)
                     .ThenInclude(x => x.Product)
-                .FirstOrDefaultAsync(c => c.UserId == userId);
+                .FirstOrDefaultAsync(c => c.UserId == userId && c.CartStatus == CartStatus.Active);
         }
     }
 }

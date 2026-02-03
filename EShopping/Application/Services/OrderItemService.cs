@@ -11,16 +11,24 @@ namespace Application.Services
         private readonly IOrderItemRepository _orderItemRepository;
         private readonly IIdentityService _identityService;
         private readonly IOrderRepository _orderRepository;
+        private readonly IOrderStatusRepository _orderStatusRepository;
 
-        public OrderItemService(IOrderItemRepository orderItemRepository, IIdentityService identityService, IOrderRepository orderRepository)
+        public OrderItemService(IOrderItemRepository orderItemRepository, IIdentityService identityService, IOrderRepository orderRepository, IOrderStatusRepository orderStatusRepository)
         {
             _orderItemRepository = orderItemRepository;
             _identityService = identityService;
             _orderRepository = orderRepository;
+            _orderStatusRepository = orderStatusRepository;
         }
 
         public async Task AddOrderItem(int quantity, Guid productId)
         {
+            var orderStatusId = await _orderStatusRepository.GetDefaultStatusId();
+            if(orderStatusId == Guid.Empty)
+            {
+                throw new Exception("Cannot add order, no default order status is configured.");
+            }
+
             var userId = _identityService.GetCurrentUserId();
             var order = await _orderRepository.GetOrderByUserId(userId);
 
@@ -28,7 +36,8 @@ namespace Application.Services
             {
                 order = new Order
                 {
-                    UserId = userId
+                    UserId = userId,
+                    OrderStatusId = orderStatusId,
                 };
 
                 await _orderRepository.AddAsync(order, CancellationToken.None);

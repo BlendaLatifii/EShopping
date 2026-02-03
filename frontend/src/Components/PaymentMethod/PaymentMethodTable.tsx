@@ -5,6 +5,7 @@ import { PaymentMethodResponseDto } from "../../Interfaces/PaymentMethod/payment
 import { PaymentMethodService } from "../../Services/PaymentMethodService.ts";
 import AddPaymentMethodModal from "./AddPaymentMethodModal.tsx";
 import EditPaymentMethodModal from "./EditPaymentMethodModal.tsx";
+import Footer from "../Footer.tsx";
 
 
 export default function PaymentMethodTable(){
@@ -36,12 +37,17 @@ async function confirmedDeletePaymentMethod(id:string)
     return (
         <>
         <Header/>
-         <button
-        className="btn btn-success"
-        onClick={() => setShowModal(true)} 
-       >
-        + Add New PaymentMethod
-    </button>
+         <div className="mt-5 d-flex justify-content-between align-items-center px-4">
+           <h2>PaymentMethods</h2>
+
+           <button
+            className="btn btn-success"
+            onClick={() => setShowModal(true)} 
+           >
+           + Add New PaymentMethod
+          </button>
+         </div>
+         
     <div className="container mt-4">
     <table className="table table-striped table-hover">
       <thead className="table-light">
@@ -129,6 +135,7 @@ async function confirmedDeletePaymentMethod(id:string)
       </div>
     </div>
    )}
+   <Footer/>
         </>
     );
 }

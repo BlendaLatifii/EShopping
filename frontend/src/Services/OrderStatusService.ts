@@ -1,7 +1,7 @@
 import axios from "axios";
-import { OrderStatusResponseDto } from "../Interfaces/OrderStatus/orderStatus-response-dto";
-import { AddOrderStatusRequestDto } from "../Interfaces/OrderStatus/add-orderStatus-dto";
-import { UpdateOrderStatusRequestDto } from "../Interfaces/OrderStatus/update-orderStatus-dto";
+import { OrderStatusResponseDto } from "../Interfaces/OrderStatus/orderStatus-response-dto.ts";
+import { AddOrderStatusRequestDto } from "../Interfaces/OrderStatus/add-orderStatus-dto.ts";
+import { UpdateOrderStatusRequestDto } from "../Interfaces/OrderStatus/update-orderStatus-dto.ts";
 
 export class OrderStatusService {
 

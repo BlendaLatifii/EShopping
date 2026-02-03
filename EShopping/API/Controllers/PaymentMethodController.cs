@@ -1,5 +1,6 @@
 ﻿using Application.DTO.Request;
 using Application.DTO.Response;
+using Application.Services;
 using Application.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -55,6 +56,14 @@ namespace API.Controllers
             await _paymentMethodService.DeletePaymentMethod(id);
 
             return Ok();
+        }
+
+        [HttpGet("get-paymentMethod-select-list")]
+        public async Task<ActionResult<List<ListItemModel>>> GetPaymentMethodSelectList()
+        {
+            var result = await _paymentMethodService.GetPaymentMethodSelectList();
+
+            return Ok(result);
         }
     }
 }

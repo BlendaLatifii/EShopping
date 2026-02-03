@@ -20,9 +20,10 @@ namespace Application.Services
         private readonly IRoleRepository _roleRepository;
         private readonly IResetPasswordRepository _resetPasswordRepository;
         private readonly IIdentityService _identityService;
+        private readonly IEmailService _emailService;
 
 
-        public AuthenticationService(IUserRepository userRepository, UserManager<User> userManager, ITokenService tokenService, IRoleRepository roleRepository, IResetPasswordRepository resetPasswordRepository, IIdentityService identityService)
+        public AuthenticationService(IUserRepository userRepository, UserManager<User> userManager, ITokenService tokenService, IRoleRepository roleRepository, IResetPasswordRepository resetPasswordRepository, IIdentityService identityService, IEmailService emailService)
         {
             _userRepository = userRepository;
             _userManager = userManager;
@@ -30,6 +31,7 @@ namespace Application.Services
             _roleRepository = roleRepository;
             _resetPasswordRepository = resetPasswordRepository;
             _identityService = identityService;
+            _emailService = emailService;
         }
 
         public async Task<List<UserResponseDto>> GetAllAsync(CancellationToken cancellationToken)
@@ -138,7 +140,7 @@ namespace Application.Services
             await _userRepository.DeleteAsync(user, CancellationToken.None);
         }
 
-        public async Task<string> RequestResetPassword(string email)
+        public async Task RequestResetPassword(string email)
         {
             var user = await _userManager.FindByEmailAsync(email);
             if(user == null)
@@ -150,8 +152,14 @@ namespace Application.Services
             var resetPasswordEntry = MapUserResetPassword(resetToken, user);
 
             await _resetPasswordRepository.AddAsync(resetPasswordEntry, CancellationToken.None);
+            var resetLink = $"http://localhost:3000/reset-password?token={Uri.EscapeDataString(resetToken)}";
+            var body = $@"Kliko linkun për reset password:
+                           <br/>
+                            <a href='{resetLink}'>Reset Password</a>
+                            <br/>
+                          Ky link skadon pas 10 minutash.";
 
-            return resetPasswordEntry.Code;
+            await _emailService.SendEmailAsync(user.Email,"Reset Password", body);
         } 
 
         private UserResetPassword MapUserResetPassword(string code, User user)
@@ -344,7 +352,8 @@ namespace Application.Services
                 Id = user.Id,
                 Email = user.Email,
                 Token = tokenAndRefreshTokenResponseDto.Token,
-                RefreshToken = tokenAndRefreshTokenResponseDto.RefreshToken.Token
+                RefreshToken = tokenAndRefreshTokenResponseDto.RefreshToken.Token,
+                Role = user.UserRoles.FirstOrDefault()?.Role?.Name,
             };
         }
 

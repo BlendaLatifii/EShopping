@@ -23,6 +23,8 @@ namespace Application
             services.AddScoped<IOrderItemService, OrderItemService>();
             services.AddScoped<IOrderService, OrderService>();
             services.AddScoped<IRoleService, RoleService>();
+            services.AddScoped<IPaymentService, PaymentService>();
+            services.AddScoped<IEmailService, EmailService>();
         }
     }
 }

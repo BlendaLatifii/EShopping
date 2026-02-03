@@ -6,10 +6,13 @@ import { CartService } from "../Services/CartService.ts";
 import { OrderService } from "../Services/OrderService.ts";
 import "./Cart.css";
 import { OrderResponseDto } from "../Interfaces/Order/order-response-dto.ts";
+import { useNavigate } from "react-router-dom";
+import Footer from "./Footer.tsx";
 
 export default function Cart() {
   const [cart, setCart] = useState<CartDto | null>(null);
   const [order, setOrder] = useState<OrderResponseDto | null>(null);
+  const navigate = useNavigate();
 
   const fetchCart = async () => {
     try {
@@ -160,10 +163,8 @@ export default function Cart() {
                 <h5 className="text-end">
                   Total: <b>${order.totalAmmount}</b>
                 </h5>
-                <button>
-                  <h5 className="text-end">
+                <button onClick={() => navigate("/Payment", { state: { orderId: order.id } })}>
                   Go to Payment
-                  </h5>
                 </button>
               </div>
             </div>
@@ -182,6 +183,7 @@ export default function Cart() {
   </div>
 </div>
 
+<Footer/>
     </>
   );
 }

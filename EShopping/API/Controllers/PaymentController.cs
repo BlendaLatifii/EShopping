@@ -1,0 +1,60 @@
+﻿using Application.DTO.Request;
+using Application.DTO.Response;
+using Application.Services.Interfaces;
+using Microsoft.AspNetCore.Mvc;
+
+namespace API.Controllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class PaymentController : ControllerBase
+    {
+
+        private readonly IPaymentService _paymentService;
+
+        public PaymentController(IPaymentService paymentService)
+        {
+            _paymentService = paymentService;
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> AddPayment(AddPaymentRequestDto addPaymentRequestDto)
+        {
+            await _paymentService.AddPayment(addPaymentRequestDto);
+
+            return Ok();
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<List<PaymentResponseDto>>> GetAllPayments()
+        {
+            var result = await _paymentService.GetAllPayments();
+
+            return Ok(result);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<PaymentResponseDto>> GetPaymentById(Guid id)
+        {
+            var result = await _paymentService.GetPaymentById(id);
+
+            return Ok(result);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult> UpdatePayment(Guid id, UpdatePaymentRequestDto updatePaymentRequestDto)
+        {
+            await _paymentService.UpdatePayment(id, updatePaymentRequestDto);
+
+            return Ok();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeletePayment(Guid id)
+        {
+            await _paymentService.DeletePayment(id);
+
+            return Ok();    
+        }
+    }
+}

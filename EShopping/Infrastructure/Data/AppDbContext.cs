@@ -25,12 +25,13 @@ namespace Infrastructure.Data
         public DbSet<RefreshToken> RefreshTokens { get; set; }
         public DbSet<UserResetPassword> UserResetPassword { get; set; }
         public DbSet<Product> Products { get; set; }
-        //public DbSet<OrderStatus> OrderStatuses { get; set; }
-        //public DbSet<PaymentMethod> PaymentMethods { get; set; }
+        public DbSet<OrderStatus> OrderStatuses { get; set; }
+        public DbSet<PaymentMethod> PaymentMethods { get; set; }
         public DbSet<Cart> Carts { get; set; }
         public DbSet<CartItem> CartItems { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderItem> OrderItems { get; set; }
-        public DbSet<Views> Views { get; set; }
+       // public DbSet<Views> Views { get; set; }
+        public DbSet<Payment> Payments { get; set; }
     }
 }

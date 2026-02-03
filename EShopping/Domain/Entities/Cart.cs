@@ -1,4 +1,6 @@
-﻿namespace Domain.Entities
+﻿using Domain.Enums;
+
+namespace Domain.Entities
 {
     public class Cart
     {
@@ -7,5 +9,6 @@
         public User User { get; set; }
         public ICollection<CartItem> CartItems { get; set; } = new List<CartItem>();
         public decimal TotalPrice { get; set; }
+        public CartStatus CartStatus { get; set; }
     }
 }

@@ -28,6 +28,9 @@ namespace Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<int>("CartStatus")
+                        .HasColumnType("int");
+
                     b.Property<decimal>("TotalPrice")
                         .HasColumnType("decimal(18,2)");
 
@@ -95,6 +98,9 @@ namespace Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid>("OrderStatusId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<DateTime>("OrderTime")
                         .HasColumnType("datetime2");
 
@@ -105,6 +111,9 @@ namespace Infrastructure.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("OrderStatusId")
+                        .IsUnique();
 
                     b.HasIndex("UserId");
 
@@ -144,13 +153,59 @@ namespace Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<bool>("DefaultStatus")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("OrderStatus");
+                    b.ToTable("OrderStatuses");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Payment", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<Guid>("OrderId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("PaymentMethodId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("TransactionDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId")
+                        .IsUnique();
+
+                    b.HasIndex("PaymentMethodId");
+
+                    b.ToTable("Payments");
+                });
+
+            modelBuilder.Entity("Domain.Entities.PaymentMethod", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("PaymentMethods");
                 });
 
             modelBuilder.Entity("Domain.Entities.Product", b =>
@@ -488,11 +543,19 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entities.Order", b =>
                 {
+                    b.HasOne("Domain.Entities.OrderStatus", "OrderStatus")
+                        .WithOne()
+                        .HasForeignKey("Domain.Entities.Order", "OrderStatusId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Domain.Entities.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("OrderStatus");
 
                     b.Navigation("User");
                 });
@@ -514,6 +577,25 @@ namespace Infrastructure.Migrations
                     b.Navigation("Order");
 
                     b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Payment", b =>
+                {
+                    b.HasOne("Domain.Entities.Order", "Order")
+                        .WithOne()
+                        .HasForeignKey("Domain.Entities.Payment", "OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.PaymentMethod", "PaymentMethod")
+                        .WithMany()
+                        .HasForeignKey("PaymentMethodId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Order");
+
+                    b.Navigation("PaymentMethod");
                 });
 
             modelBuilder.Entity("Domain.Entities.Product", b =>

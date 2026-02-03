@@ -1,4 +1,6 @@
-﻿namespace Application.DTO.Response
+﻿using Domain.Enums;
+
+namespace Application.DTO.Response
 {
     public class CartDto
     {

@@ -52,7 +52,7 @@ const AddUserModal: React.FC<Props> = ({
       if (onUserAdded) onUserAdded(); 
     } catch (error) {
       console.error(error);
-      alert("Error adding category");
+      alert("Error adding user");
     } finally {
       setLoading(false);
     }

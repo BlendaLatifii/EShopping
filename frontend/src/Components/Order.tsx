@@ -27,7 +27,7 @@ const Order= () => {
         <div key={order.id} className="card mb-3">
           <div className="card-body">
             <h5>Order #{order.id }</h5>
-            {/* <p>Status: <b>{order.status}</b></p> */}
+             <p>Status: <b>{order.orderStatus}</b></p>
 
             <ul className="list-group">
               {order.items?.map((item, id) => (

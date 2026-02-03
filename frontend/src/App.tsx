@@ -17,12 +17,16 @@ import PaymentMethodTable from "./Components/PaymentMethod/PaymentMethodTable.ts
 import HomePage from "./Components/HomePage.tsx";
 import ForgetPassword from "./Components/ForgetPassword.tsx";
 import ResetPassword from "./Components/ResetPassword.tsx";
+import Payment from "./Components/Payment/Payment.tsx";
+import PaymentTable from "./Components/Payment/PaymentTable.tsx";
 
 function App() {
   axios.interceptors.request.use(async(config) => {
     config.headers.Authorization = `Bearer ${await AuthService.GetToken()}`;
     return config;
   });
+
+  
   
   return (
    <>
@@ -42,7 +46,9 @@ function App() {
     <Route path="/OrderStatusTable" element={<OrderStatusTable/>}/>
     <Route path="/PaymentMethodTable" element={<PaymentMethodTable/>}/>
     <Route path="/ForgetPassword" element={<ForgetPassword/>}/>
-    <Route path="/ResetPassword" element={<ResetPassword/>}/>
+    <Route path="/reset-password" element={<ResetPassword/>}/>
+    <Route path="/Payment" element={<Payment/>}/>
+    <Route path="/PaymentTable" element={<PaymentTable/>}/>
    </Routes>
    </>
   );

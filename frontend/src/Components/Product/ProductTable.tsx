@@ -4,6 +4,8 @@ import { ProductService } from "../../Services/ProductService.ts";
 import AddProduct from "./AddProduct.tsx";
 import { useNavigate } from "react-router-dom";
 import EditProductModal from "./EditProductModal.tsx";
+import Header from "../Header.tsx";
+import Footer from "../Footer.tsx";
 
 export default function ProductTable(){
 
@@ -31,22 +33,19 @@ export default function ProductTable(){
     fetchData();
     }, []);
     
-    const navigate =  useNavigate();
-
-    function sendToDetails(id:string ){
-    navigate(`/EditProduct/${id}`)
-    }
-    
     return (
        <Fragment>
+        <Header/>
          <div className="mt-5 d-flex justify-content-between align-items-center px-4">
-        <button
-        className="btn btn-success"
-        onClick={() => setShowModal(true)} 
-       >
-        + Add New Product
+    <h2>Products</h2>
+
+    <button
+      className="btn btn-success"
+      onClick={() => setShowModal(true)} 
+    >
+      + Add New Product
     </button>
-    </div>
+  </div>
          <div className="container mt-4">
        <table className="table table-striped table-hover">
       <thead className="table-light">
@@ -140,6 +139,9 @@ export default function ProductTable(){
       </div>
     </div>
     )}
+    <br/>
+    <br/>
+    <Footer/>
         </Fragment>
     );
 }

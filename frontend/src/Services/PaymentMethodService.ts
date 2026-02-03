@@ -2,6 +2,7 @@ import axios from "axios";
 import { AddPaymentMethodRequestDto } from "../Interfaces/PaymentMethod/add-paymentMethod-dto";
 import { UpdatePaymentMethodRequestDto } from "../Interfaces/PaymentMethod/update-paymentMethod-dto";
 import { PaymentMethodResponseDto } from "../Interfaces/PaymentMethod/paymentMethod-response-dto";
+import { ListItemModel } from "../Interfaces/listItemModel";
 
 export class PaymentMethodService {
 
@@ -29,4 +30,9 @@ private static BaseUrl = "https://localhost:7147/api/PaymentMethod";
    public static async DeletePaymentMethod(id: string) : Promise<void>{
     await axios.delete(`${this.BaseUrl}/${id}`);
    }
+
+   public static async GetSelectList(): Promise<ListItemModel[]>{
+     const result = await axios.get<ListItemModel[]>(`${this.BaseUrl}/get-paymentMethod-select-list`);
+     return result.data;
+  }
 }

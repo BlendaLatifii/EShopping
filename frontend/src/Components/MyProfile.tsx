@@ -4,6 +4,7 @@ import { AuthService } from "../Services/AuthService.ts";
 import Header from "./Header.tsx";
 import { FaUser, FaEnvelope, FaPhone } from "react-icons/fa";
 import "./MyProfile.css";
+import Footer from "./Footer.tsx";
 
 export default function MyProfile() {
   const [user, setUser] = useState<UserResponseDto>();
@@ -46,6 +47,7 @@ export default function MyProfile() {
           </div>
         </div>
       </div>
+      <Footer/>
     </>
   );
 }

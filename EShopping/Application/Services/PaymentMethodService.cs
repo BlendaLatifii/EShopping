@@ -3,6 +3,7 @@ using Application.DTO.Response;
 using Application.Services.Interfaces;
 using Domain.Entities;
 using Infrastructure.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.Services
 {
@@ -74,6 +75,18 @@ namespace Application.Services
             }
 
             await _paymentMethodRepository.DeleteAsync(paymentMethod, CancellationToken.None);
+        }
+
+        public async Task<List<ListItemModel>> GetPaymentMethodSelectList()
+        {
+            var paymentMethod = await _paymentMethodRepository.Query()
+                .Select(x => new ListItemModel
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                }).ToListAsync();
+
+            return paymentMethod;
         }
 
         private PaymentMethodResponseDto MapToDto(PaymentMethod paymentMethod)

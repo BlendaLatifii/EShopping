@@ -8,6 +8,7 @@ import { ProductService } from "../../Services/ProductService.ts";
 import { ProductResponseDto } from "../../Interfaces/Product/product-response-dto.ts";
 import CategorySidebar from "./CategorySidebar.tsx";
 import ProductGrid from "../Product/ProductGrid.tsx";
+import Footer from "../Footer.tsx";
 
 export default function Category() {
   const [categories, setCategories] = useState<CategoryResponseDto[]>([]);
@@ -77,6 +78,7 @@ export default function Category() {
           </div>
         </div>
       </div>
+      <Footer/>
     </>
   );
 }

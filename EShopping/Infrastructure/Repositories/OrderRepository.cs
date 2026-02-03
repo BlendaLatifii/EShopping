@@ -17,7 +17,7 @@ namespace Infrastructure.Repositories
                 .Include(x => x.User)
                 .Include(x => x.Items)
                    .ThenInclude(x => x.Product)
-                .FirstOrDefaultAsync(x => x.UserId == userId);
+                .FirstOrDefaultAsync(x => x.UserId == userId && x.OrderStatus.DefaultStatus);
         }
     }
 }

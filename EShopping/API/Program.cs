@@ -11,6 +11,8 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 var apiConfig = builder.Configuration.GetSection(nameof(ApiConfig)).Get<ApiConfig>()!;
+builder.Services.Configure<SmtpSettings>(
+    builder.Configuration.GetSection("SmtpSettings"));
 
 // Add services to the container.
 

@@ -3,6 +3,7 @@ using Application.DTO.Response;
 using Application.Services.Interfaces;
 using Domain.Entities;
 using Infrastructure.Repositories.Interfaces;
+using Microsoft.Identity.Client;
 
 namespace Application.Services
 {
@@ -37,6 +38,14 @@ namespace Application.Services
                 };
 
                 await _cartRepository.AddAsync(cart, CancellationToken.None);
+            }
+
+            var existingItem = await _cartItemRepository
+                 .GetByCartIdAndProductId(cart.Id, addCartItemRequestDto.ProductId);
+
+            if (existingItem != null)
+            {
+                throw new Exception("This product exist , edit it in cart page.");
             }
 
             var cartItem = MapToEntity(addCartItemRequestDto);
@@ -120,9 +129,9 @@ namespace Application.Services
         {
             Guid userId = _identityService.GetCurrentUserId();
             var cart = await _cartRepository.GetCartByUserId(userId);
-            if(cart is null)
+            if(cart == null)
             {
-                throw new Exception("Cart is empty");
+                return 0;
             }
 
             int cartItems = cart.CartItems.Count;
