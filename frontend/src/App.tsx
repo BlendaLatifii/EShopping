@@ -3,7 +3,6 @@ import { Routes, Route, Outlet } from "react-router-dom";
 import SignUp from "./Components/SignUp.tsx";
 import Cart from "./Components/Cart.tsx";
 import axios from "axios";
-import { AuthService } from "./Services/AuthService.ts";
 import Order from "./Components/Order.tsx";
 import MyProfile from "./Components/MyProfile.tsx";
 import Category from "./Components/Category/Category.tsx";
@@ -20,6 +19,9 @@ import Payment from "./Components/Payment/Payment.tsx";
 import PaymentTable from "./Components/Payment/PaymentTable.tsx";
 import Layout from "./Components/Layout.tsx";
 import Dashboard from "./Components/Dashboard.tsx";
+import AdminRoute from "./Components/AdminRoute.tsx";
+import {AuthService} from "./Services/AuthService.ts"
+import AuthenticatedRoute from "./Components/AuthenticatedRoute.tsx";
 
 function App() {
   axios.interceptors.request.use(async(config) => {
@@ -38,20 +40,20 @@ function App() {
       <Route path="/reset-password" element={<ResetPassword />} />
 
     <Route element={<Layout />}>
-    <Route path="/HomePage" element={<HomePage/>}/>
-    <Route path="/Category" element={<Category/>}/>
-    <Route path="/CategoryTable" element={<CategoryTable/>}/>
-    <Route path="/ProductTable" element={<ProductTable/>}/>
-    <Route path="/UserTable" element={<UserTable/>}/>
-    <Route path="/Cart" element={<Cart/>}/>
-    <Route path="/ProductDetail/:id" element={<ProductDetail/>}/>
-    <Route path="/Order" element={<Order/>}/>
-    <Route path="/MyProfile" element={<MyProfile/>}/>
-    <Route path="/OrderStatusTable" element={<OrderStatusTable/>}/>
-    <Route path="/PaymentMethodTable" element={<PaymentMethodTable/>}/>
-    <Route path="/Payment" element={<Payment/>}/>
-    <Route path="/PaymentTable" element={<PaymentTable/>}/>
-    <Route path="/Dashboard" element={<Dashboard/>}/>
+    <Route path="/HomePage" element={<AuthenticatedRoute component={HomePage}/>}/>
+    <Route path="/Category" element={<AuthenticatedRoute component={Category}/>}/>
+    <Route path="/CategoryTable" element={<AdminRoute component = {CategoryTable}/>}/>
+    <Route path="/ProductTable" element={<AdminRoute component = {ProductTable}/>}/>
+    <Route path="/UserTable" element={<AdminRoute component = {UserTable}/>}/>
+    <Route path="/Cart" element={<AuthenticatedRoute component={Cart}/>}/>
+    <Route path="/ProductDetail/:id" element={<AuthenticatedRoute component={ProductDetail}/>}/>
+    <Route path="/Order" element={<AuthenticatedRoute component={Order}/>}/>
+    <Route path="/MyProfile" element={<AuthenticatedRoute component={MyProfile}/>}/>
+    <Route path="/OrderStatusTable" element={< AdminRoute component = {OrderStatusTable}/>}/>
+    <Route path="/PaymentMethodTable" element={<AdminRoute component = {PaymentMethodTable}/>}/>
+    <Route path="/Payment" element={<AuthenticatedRoute component={Payment}/>}/>
+    <Route path="/PaymentTable" element={<AdminRoute component = {PaymentTable}/>}/>
+    <Route path="/Dashboard" element={<AdminRoute component={Dashboard}/>}/>
     </Route>
    </Routes>
    </>

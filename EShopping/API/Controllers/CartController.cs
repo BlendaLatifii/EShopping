@@ -18,6 +18,7 @@ namespace API.Controllers
             _cartService = cartService;
         }
 
+        [Authorize]
         [HttpGet]
         public async Task<ActionResult<CartDto>> GetCartAsync()
         {

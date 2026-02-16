@@ -113,4 +113,12 @@ public static async CountUsers() : Promise<number>{
   const result = await axios.get(`${this.BaseUrl}/count-users`);
   return result.data;
  }
+
+ public static isAuthenticated() {
+    if (AuthService.token) {
+      return true;
+    }
+    const token = Cookies.get("jwt");
+    return token != null;
+  }
 }

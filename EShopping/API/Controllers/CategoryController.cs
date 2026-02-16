@@ -2,6 +2,8 @@
 using Application.DTO.Response;
 using Application.Services;
 using Application.Services.Interfaces;
+using Infrastructure.Repositories.Seeds;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -18,6 +20,7 @@ namespace API.Controllers
          _categoryService = categoryService;    
         }
 
+        [Authorize(Roles = Roles.Admin)]
         [HttpPost]
         public async Task<ActionResult> AddCategory(AddCategoryRequestDto addCategoryRequestDto)
         {
@@ -25,6 +28,7 @@ namespace API.Controllers
 
             return Ok();
         }
+
 
         [HttpGet]
         public async Task<ActionResult<List<CategoryResponseDto>>> GetAllCategories()
@@ -42,6 +46,7 @@ namespace API.Controllers
             return Ok(result);
         }
 
+        [Authorize(Roles = Roles.Admin)]
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateCategory([FromRoute] Guid id, [FromBody] UpdateCategoryRequestDto updateCategoryRequestDto)
         {
@@ -50,6 +55,7 @@ namespace API.Controllers
             return Ok();
         }
 
+        [Authorize(Roles = Roles.Admin)]
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteCategory(Guid id)
         {

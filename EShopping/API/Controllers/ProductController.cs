@@ -1,13 +1,15 @@
 ﻿using Application.DTO.Request;
 using Application.DTO.Response;
 using Application.Services.Interfaces;
-using Domain.Entities;
+using Infrastructure.Repositories.Seeds;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class ProductController : ControllerBase
     {
 
@@ -20,6 +22,7 @@ namespace API.Controllers
             _productRecomandation = productRecomandation;
         }
 
+        [Authorize(Roles = Roles.Admin)]
         [HttpPost]
         public async Task<ActionResult> AddProduct(AddProductRequestDto addProductRequestDto)
         {
@@ -28,6 +31,7 @@ namespace API.Controllers
             return Ok();
         }
 
+        [Authorize(Roles = Roles.Admin)]
         [HttpGet]
         public async Task<ActionResult<List<ProductResponseDto>>> GetAllProducts()
         {
@@ -60,6 +64,7 @@ namespace API.Controllers
             return Ok(result);
         }
 
+        [Authorize(Roles = Roles.Admin)]
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateProduct([FromRoute] Guid id, [FromBody] UpdateProductRequestDto updateProductRequestDto)
         {
@@ -68,6 +73,7 @@ namespace API.Controllers
             return Ok();
         }
 
+        [Authorize(Roles = Roles.Admin)]
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteProduct(Guid id)
         {

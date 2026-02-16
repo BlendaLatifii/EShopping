@@ -3,6 +3,7 @@ using Application.DTO.Request;
 using Application.DTO.Response;
 using Application.Services;
 using Application.Services.Interfaces;
+using Infrastructure.Repositories.Seeds;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -43,6 +44,7 @@ namespace API.Controllers
             return Ok();
         }
 
+        [Authorize(Roles = Roles.Admin)]
         [HttpPost("add-user")]
         public async Task<ActionResult> AddUser(AddUserRequestDto userRequestDto)
         {
@@ -51,6 +53,7 @@ namespace API.Controllers
             return Ok();
         }
 
+        [Authorize(Roles = Roles.Admin)]
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateUser([FromRoute]Guid id, [FromBody]UpdateUserRequestDto updateUserRequestDto)
         {
@@ -59,6 +62,7 @@ namespace API.Controllers
             return Ok();
         }
 
+        [Authorize(Roles = Roles.Admin)]
         [HttpGet]
         public async Task<ActionResult<List<UserResponseDto>>> GetAll()
         {
@@ -66,6 +70,7 @@ namespace API.Controllers
 
             return Ok(result);
         }
+
 
         [HttpGet("{id}")]
         public async Task<ActionResult<UserResponseDto>> GetUserById(Guid id)
@@ -75,6 +80,7 @@ namespace API.Controllers
             return Ok(result);
         }
 
+        [Authorize]
         [HttpGet("user-profile")]
         public async Task<ActionResult<UserResponseDto>> GetUserDetail()
         {
@@ -91,6 +97,7 @@ namespace API.Controllers
             return Ok(result);
         }
 
+        [Authorize(Roles = Roles.Admin)]
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteUser(Guid id)
         {

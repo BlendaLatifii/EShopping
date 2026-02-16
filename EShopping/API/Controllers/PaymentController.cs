@@ -1,6 +1,8 @@
 ﻿using Application.DTO.Request;
 using Application.DTO.Response;
 using Application.Services.Interfaces;
+using Infrastructure.Repositories.Seeds;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -17,6 +19,7 @@ namespace API.Controllers
             _paymentService = paymentService;
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<ActionResult> AddPayment(AddPaymentRequestDto addPaymentRequestDto)
         {
@@ -25,6 +28,7 @@ namespace API.Controllers
             return Ok();
         }
 
+        [Authorize(Roles = Roles.Admin)]
         [HttpGet]
         public async Task<ActionResult<List<PaymentResponseDto>>> GetAllPayments()
         {
@@ -33,6 +37,7 @@ namespace API.Controllers
             return Ok(result);
         }
 
+        [Authorize(Roles = Roles.Admin)]
         [HttpGet("{id}")]
         public async Task<ActionResult<PaymentResponseDto>> GetPaymentById(Guid id)
         {
@@ -41,6 +46,7 @@ namespace API.Controllers
             return Ok(result);
         }
 
+        [Authorize(Roles = Roles.Admin)]
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdatePayment(Guid id, UpdatePaymentRequestDto updatePaymentRequestDto)
         {
@@ -49,6 +55,7 @@ namespace API.Controllers
             return Ok();
         }
 
+        [Authorize(Roles = Roles.Admin)]
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeletePayment(Guid id)
         {
