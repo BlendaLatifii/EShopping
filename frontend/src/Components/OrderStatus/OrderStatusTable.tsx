@@ -34,7 +34,6 @@ async function confirmedDeleteOrderStatus(id:string)
 
     return (
         <>
-        <Header/>
         <div className="mt-5 d-flex justify-content-between align-items-center px-4">
           <h2>OrderStatuses</h2>
 
@@ -59,7 +58,7 @@ async function confirmedDeleteOrderStatus(id:string)
         {orderStatus.map((item) => (
           <tr key={item.id}>
             <td>{item.name}</td>
-            <td>{item.defaultStatus}</td>
+            <td>{item.defaultStatus == true ? "true" : "false"}</td>
             <td>
               <button
                 className="btn btn-outline-success btn-sm me-2"
@@ -134,7 +133,6 @@ async function confirmedDeleteOrderStatus(id:string)
       </div>
     </div>
    )}
-   <Footer/>
         </>
     );
 }

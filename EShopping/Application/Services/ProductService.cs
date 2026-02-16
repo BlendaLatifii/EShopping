@@ -4,6 +4,7 @@ using Application.Services.Interfaces;
 using Domain.Entities;
 using Infrastructure.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Client;
 
 namespace Application.Services
 {
@@ -205,5 +206,40 @@ namespace Application.Services
 
             return category;
         }
+
+        public async Task<List<ProductResponseDto>> GetProductsByCategory()
+        {
+           var products = await _productRepository.GetProductByCategory();
+
+           var model = products.Select(x => MapToDto(x)).ToList();
+
+            return model;
+        }
+       
+        public async Task<int> CountProduts()
+        {
+            var numberOfProducts = await _productRepository.Query().CountAsync();
+
+            return numberOfProducts;
+        }
+
+        public async Task<List<ProductAndCategory>> GetProductCountByCategoryAsync()
+        {
+            var products = await _productRepository.GetProductsWithCategory(CancellationToken.None);
+
+            var result = products
+                .GroupBy(p => new { p.CategoryId, p.Category.Name })
+                .Select(g => new ProductAndCategory
+                {
+                    CategoryId = g.Key.CategoryId,
+                    CategoryName = g.Key.Name,
+                    NumberOfProducts = g.Count()
+                })
+                .ToList();
+
+            return result;
+        }
+
+
     }
 }

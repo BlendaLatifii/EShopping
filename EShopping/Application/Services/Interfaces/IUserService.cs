@@ -10,5 +10,6 @@ namespace Application.Services.Interfaces
         Task<UserResponseDto> GetUserDetail();
         Task UpdateUser(Guid id, UpdateUserRequestDto updateUserRequestDto);
         Task DeleteUser(Guid id);
+        Task<int> CountUsers();
     }
 }

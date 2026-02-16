@@ -1,10 +1,9 @@
 import { Button, Form, Modal } from "react-bootstrap";
 import { useEffect, useState } from "react";
-import { OrderStatusService } from "../../Services/OrderStatusService.ts";
 import { UpdateProductRequestDto } from "../../Interfaces/Product/update-product-dto.ts";
 import { ProductService } from "../../Services/ProductService.ts";
-import { ProductResponseDto } from "../../Interfaces/Product/product-response-dto.ts";
 import { SelectListItem } from "../../Interfaces/select-list-item.ts";
+import { CategoryService } from "../../Services/CategoryService.ts";
 
 interface Props {
   show: boolean;
@@ -12,57 +11,91 @@ interface Props {
   productId: string | null;
   onProductUpdated: () => void;
 }
+
 const EditProductModal: React.FC<Props> = ({
   show,
   handleClose,
   productId,
   onProductUpdated,
 }) => {
+
   const [formData, setFormData] = useState<UpdateProductRequestDto>({
-        images:[],
-        name:"",
-        description:"",
-        price:0,
-        categoryId:""
+    images: [],
+    name: "",
+    description: "",
+    price: 0,
+    categoryId: ""
   });
+
   const [loading, setLoading] = useState(false);
   const [categorySelectList, setCategorySelectList] = useState<SelectListItem[]>([]);
 
-  useEffect(() => {
-    if (!show || !productId) return;
+  const fetchCategory = async () => {
+    const response = await CategoryService.GetSelectList();
 
-    const fetchProduct = async () => {
-      try {
-        const product = await ProductService.GetProductById(productId);
-        setFormData({
-          name: product.name,
-          description : product.description,
-          price : product.price,
-          categoryId : product.categoryId,
-          categoryName: product.categoryName
-        });
-      } catch (err) {
-        console.error(err);
-      }
-    };
-
-    fetchProduct();
-  }, [show, productId]);
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-    setFormData({ ...formData, name: e.target.value });
+    setCategorySelectList(
+      response.map((item, i) => ({
+        key: i,
+        value: item.id,
+        text: item.name
+      }))
+    );
   };
 
-  const submitForm = async (e: React.FormEvent) => {
+  const fetchProduct = async () => {
+    if (!productId) return;
+
+    const product = await ProductService.GetProductById(productId);
+
+    setFormData({
+      name: product.name,
+      description: product.description,
+      price: product.price,
+      categoryId: product.categoryId, 
+      images: []
+    });
+  };
+
+
+  useEffect(() => {
+    if (show) {
+      fetchCategory();
+      fetchProduct();
+    }
+  }, [show, productId]);
+
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+
+    setFormData(prev => ({
+      ...prev,
+      [name]: name === "price" ? Number(value) : value
+    }));
+  };
+
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files) return;
+
+    setFormData(prev => ({
+      ...prev,
+      images: [...(prev.images ?? []), ...Array.from(files)]
+    }));
+  };
+
+  const submitForm = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
 
     try {
-      await OrderStatusService.UpdateOrderStatus(productId!, formData);
+      await ProductService.UpdateProduct(productId!, formData);
       onProductUpdated();
       handleClose();
-    } catch (error) {
-      console.error(error);
+    } catch {
       alert("Error updating product");
     } finally {
       setLoading(false);
@@ -72,15 +105,26 @@ const EditProductModal: React.FC<Props> = ({
   return (
     <Modal show={show} onHide={handleClose} centered>
       <Modal.Header closeButton>
-        <Modal.Title>Edit </Modal.Title>
+        <Modal.Title>Edit Product</Modal.Title>
       </Modal.Header>
 
       <Form onSubmit={submitForm}>
         <Modal.Body>
-          <Form.Group>
+
+          <Form.Group className="mb-3">
+            <Form.Label>Product Image</Form.Label>
+            <Form.Control
+              type="file"
+              multiple
+              onChange={handleImageChange}
+            />
+          </Form.Group>
+
+          <Form.Group className="mb-3">
             <Form.Label>Name</Form.Label>
             <Form.Control
               type="text"
+              name="name"
               value={formData.name!}
               onChange={handleChange}
             />
@@ -91,10 +135,8 @@ const EditProductModal: React.FC<Props> = ({
             <Form.Control
               type="text"
               name="description"
-              placeholder="Enter description"
               value={formData.description!}
               onChange={handleChange}
-              required
             />
           </Form.Group>
 
@@ -103,27 +145,28 @@ const EditProductModal: React.FC<Props> = ({
             <Form.Control
               type="number"
               name="price"
-              placeholder="Enter price"
               value={formData.price!}
               onChange={handleChange}
             />
           </Form.Group>
-     
-          <div className="col-md-6-w-100%">
+
+          <Form.Group className="mb-3">
+            <Form.Label>Category</Form.Label>
             <select
-               className="form-control"
-               id="categoryId"
-               name="categoryId"
-               value={formData.categoryId!}
-               onChange={handleChange}
-               style={{ marginBottom: "15px" }}
-               >
-                <option value="" disabled>Select category</option>
-                {categorySelectList.map((x) => (
-                <option key={x.key} value={x.value}>{x.text}</option>
-                ))}
-           </select>
-           </div>
+              className="form-control"
+              name="categoryId"
+              value={formData.categoryId!}
+              onChange={handleChange}
+            >
+              <option value="">Select category</option>
+              {categorySelectList.map(x => (
+                <option key={x.key} value={x.value}>
+                  {x.text}
+                </option>
+              ))}
+            </select>
+          </Form.Group>
+
         </Modal.Body>
 
         <Modal.Footer>
@@ -138,4 +181,5 @@ const EditProductModal: React.FC<Props> = ({
     </Modal>
   );
 };
+
 export default EditProductModal;

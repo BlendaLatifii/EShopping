@@ -73,10 +73,11 @@ export default function ForgetPassword() {
             required
           />
         </Form.Group>
-
+      <div className="text-end">
         <Button variant="primary" type="submit">
           Send Reset Link
         </Button>
+        </div>
       </Form>
     </div>
     </div>

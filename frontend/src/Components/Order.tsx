@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { OrderService } from "../Services/OrderService.ts";
 import { OrderResponseDto } from "../Interfaces/Order/order-response-dto";
-import Header from "./Header.tsx";
 
 const Order= () => {
   const [order, setOrder] = useState<OrderResponseDto | null>(null);
@@ -20,7 +19,6 @@ const Order= () => {
 
   return (
     <>
-     <Header/>
     <div className="container mt-4">
       <h3>My Order</h3>
 

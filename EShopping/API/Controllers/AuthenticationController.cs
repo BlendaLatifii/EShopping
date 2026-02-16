@@ -1,6 +1,7 @@
 ﻿using API.Constants;
 using Application.DTO.Request;
 using Application.DTO.Response;
+using Application.Services;
 using Application.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -120,6 +121,14 @@ namespace API.Controllers
         public async Task<ActionResult<RefreshTokenResponseDto>> RefreshToken()
         {
             var result = await _authenticationService.RefreshToken(_cookieService.Get(CookieNames.RefreshToken));
+
+            return Ok(result);
+        }
+
+        [HttpGet("count-users")]
+        public async Task<ActionResult<int>> CountUsers()
+        {
+            var result = await _userService.CountUsers();
 
             return Ok(result);
         }

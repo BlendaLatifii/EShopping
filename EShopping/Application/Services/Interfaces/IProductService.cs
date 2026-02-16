@@ -13,5 +13,8 @@ namespace Application.Services.Interfaces
         Task<List<ProductResponseDto>> SearchProduct(string? searchTerm, string? sortBy);
         Task<List<ListItemModel>> GetProductSelectList();
         Task DeleteProduct(Guid id);
+        Task<List<ProductResponseDto>> GetProductsByCategory();
+        Task<int> CountProduts();
+        Task<List<ProductAndCategory>> GetProductCountByCategoryAsync();
     }
 }

@@ -1,10 +1,8 @@
 import { useEffect, useState } from "react";
-import Header from "../Header.tsx";
 import { PaymentService } from "../../Services/PaymentService.ts";
 import { PaymentResponseDto } from "../../Interfaces/Payment/PaymentResponseDto.ts";
 import AddPaymentModal from "./AddPaymentModal.tsx";
 import EditPaymentModal from "./EditPaymentModal.tsx";
-import Footer from "../Footer.tsx";
 
 
 export default function PaymentTable(){
@@ -34,7 +32,6 @@ async function confirmedDeletePayment(id:string)
 
     return (
         <>
-        <Header/>
         <div className="mt-5 d-flex justify-content-between align-items-center px-4">
          <h2>Payments</h2>
 
@@ -136,7 +133,6 @@ async function confirmedDeletePayment(id:string)
       </div>
     </div>
    )}
-   <Footer/>
         </>
     );
 }

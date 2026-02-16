@@ -11,5 +11,6 @@ namespace Application.Services.Interfaces
         Task UpdateCategory(Guid id, UpdateCategoryRequestDto updateCategoryRequestDto);
         Task DeleteCategory(Guid id);
         Task<List<ListItemModel>> GetCategorySelectList();
+        Task<int> CountCategories();
     }
 }

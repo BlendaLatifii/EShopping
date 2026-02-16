@@ -5,8 +5,6 @@ import { PaymentMethodService } from "../../Services/PaymentMethodService.ts";
 import { PaymentService } from "../../Services/PaymentService.ts";
 import { AddPaymentRequestDto } from "../../Interfaces/Payment/AddPaymentRequestDto.ts";
 import { useLocation } from "react-router-dom";
-import Header from "../Header.tsx";
-import Footer from "../Footer.tsx";
 
 export default function Payment() {
   const [loading, setLoading] = useState(false);
@@ -78,7 +76,6 @@ export default function Payment() {
 
   return (
     <>
-      <Header/>
     <div
       style={{
         minHeight: "100vh",
@@ -154,7 +151,6 @@ export default function Payment() {
         </Form>
       </div>
     </div>
-    <Footer/>
     </>
   );
 }

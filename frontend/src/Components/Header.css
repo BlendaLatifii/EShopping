@@ -1,115 +1,27 @@
 /* Header me ngjyrë të lehtë roze */
 .custom-header {
-  background-color: #ffe6f0; /* roze e lehtë */
+  background-color: #091d3c; /* roze e lehtë */
+}
+.custom-header {
+  background-color:#091d3c/* blu e mbyllët, pak gri */
 }
 
-/* Faqja e category */
-.page-bg {
-  background-color: #fff0f5; /* ngjyrë e lehtë roze per content */
-  min-height: 100vh;
-  padding: 20px 0;
+.custom-header .nav-link,
+.custom-header .navbar-brand {
+  color: #ffffff !important; /* tekst i bardhë për kontrast */
 }
 
-.page-card {
-  background-color: #ffffff;
-  border-radius: 15px;
-  padding: 20px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+.custom-header .nav-link:hover {
+  color: #a9d6e5 !important; /* blu më e çelët për hover */
 }
 
-/* Sidebar i kategorive */
-.sidebar {
-  background-color: #fff0f5;
-  border-radius: 10px;
-  padding: 15px;
-  margin-bottom: 20px;
+.custom-header .btn-outline-light {
+  border-color: #a9d6e5;
+  color: #ffffff;
 }
 
-.sidebar-title {
-  font-weight: bold;
-  margin-bottom: 15px;
+.custom-header .btn-outline-light:hover {
+  background-color: rgb(50, 60, 58); /* pak më i errët kur hover */
+  border-color: rgb(50, 60, 58);
 }
 
-.category-item {
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.category-item.active,
-.category-item:hover {
-  background-color: #ffb3d1; /* roze më e fortë për hover/selected */
-  color: #fff;
-}
-
-/* ProductCard */
-.product-card {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  height: 100%;
-  transition: transform 0.2s, box-shadow 0.2s;
-  border-radius: 10px;
-  background-color: #fff;
-}
-
-.product-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-}
-
-.product-image {
-  height: 180px;
-  width: 100%;
-  object-fit: cover;
-  border-radius: 10px;
-}
-
-.product-info {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 10px 0;
-}
-
-.product-info p {
-  flex-grow: 1;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-/* Buttons */
-.btn-outline-primary {
-  background-color: #fff;
-  color: #ff66a3;
-  border: 1px solid #ff66a3;
-  transition: 0.3s;
-}
-
-.btn-outline-primary:hover {
-  background-color: #ff66a3;
-  color: #fff;
-}
-
-.btn-primary {
-  background-color: #ff3385;
-  border: none;
-}
-
-.btn-primary:hover {
-  background-color: #e60073;
-}
-
-/* Filters në rresht */
-.filters {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-bottom: 20px;
-}
-.filters input {
-  flex: 1;
-  min-width: 200px;
-}
-.filters select {
-  width: 200px;
-}

@@ -6,5 +6,6 @@ namespace Infrastructure.Repositories.Interfaces
     {
         Task<List<Product>> GetProductsWithCategory(CancellationToken cancellationToken);
         Task<Product> GetProductWithCategory(Guid id, CancellationToken cancellationToken);
+        Task<List<Product>> GetProductByCategory();
     }
 }

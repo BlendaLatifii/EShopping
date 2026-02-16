@@ -9,5 +9,7 @@ namespace Application.Services.Interfaces
         Task<OrderResponseDto> GetOrderById(Guid id);
         Task DeleteOrder(Guid id);
         Task<OrderResponseDto> GetOrderOfUser();
+        Task<int> CountOrders();
+        Task<List<DailySalesDto>> GetDailySalesAsync();
     }
 }

@@ -55,7 +55,6 @@ export default function Category() {
  
   return (
     <>
-      <Header />
       <div className="page-bg">
         <div className="page-card container-fluid">
           <div className="row">
@@ -78,7 +77,6 @@ export default function Category() {
           </div>
         </div>
       </div>
-      <Footer/>
     </>
   );
 }

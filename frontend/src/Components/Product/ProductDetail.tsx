@@ -4,11 +4,14 @@ import { ProductService } from "../../Services/ProductService.ts";
 import "./ProductDetail.css";
 import { useParams } from "react-router-dom";
 import Header from "../Header.tsx";
+import Footer from "../Footer.tsx";
 import ProductImage from "./ProductImage.tsx";
+import ProductCard from "./ProductCard.tsx";
 
 export default function ProductDetail(){
   const { id } = useParams<{ id: string }>();
   const [product, setProduct] = useState<ProductResponseDto>();  
+  const [recommended, setRecommended] = useState<ProductResponseDto[]>([]);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -18,6 +21,14 @@ export default function ProductDetail(){
       }
     };
 
+  const fetchRecommended = async () => {
+    if(id){
+      const recomendedData = await ProductService.GetSimilarProducts(id);
+      setRecommended(recomendedData);
+    }
+  };
+    
+    fetchRecommended();
     fetchProduct();
   }, [id]);
 
@@ -30,10 +41,8 @@ export default function ProductDetail(){
   : [];
     return (
         <>
-        <Header/>
     <div className="product-detail-content">
     <div className="row">
-    {/* Kolona e majtë: Imazhi i produktit */}
     <div className="col-md-6">
       <div className="product-image-wrapper shadow-sm rounded">
         <img
@@ -44,7 +53,6 @@ export default function ProductDetail(){
       </div>
     </div>
 
-    {/* Kolona e djathtë: Informacioni i produktit */}
     <div className="col-md-6">
       <ProductImage images={images} />
       <h2 className="mb-3">{product.name}</h2>
@@ -58,10 +66,15 @@ export default function ProductDetail(){
       </button>
     </div>
   </div>
-  {/* Related products */}
-  {/* <div className="row mt-5">
-    <h4>Related Products</h4>
-    <ProductCard /> {/* Mund të shfaqësh 3-4 produkte të ngjashme */}
+<div className="row mt-5">
+  <h4>Related Products</h4>
+
+  {recommended.map(p => (
+    <div key={p.id} className="col-md-3">
+      <ProductCard product={p}/>
+    </div>
+  ))}
+</div>
 </div>
 </>
     )

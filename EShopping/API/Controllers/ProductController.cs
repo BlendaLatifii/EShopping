@@ -1,6 +1,7 @@
 ﻿using Application.DTO.Request;
 using Application.DTO.Response;
 using Application.Services.Interfaces;
+using Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -11,10 +12,12 @@ namespace API.Controllers
     {
 
         private readonly IProductService _productService;
+        private readonly IProductRecomandationService _productRecomandation;
 
-        public ProductController(IProductService productService) 
+        public ProductController(IProductService productService , IProductRecomandationService productRecomandation) 
         {
-            _productService = productService;    
+            _productService = productService;  
+            _productRecomandation = productRecomandation;
         }
 
         [HttpPost]
@@ -79,6 +82,38 @@ namespace API.Controllers
             var reuslt = await _productService.GetProductSelectList();
 
             return Ok(reuslt);
+        }
+
+        [HttpGet("recommendation/{productId}")]
+         public async Task<ActionResult<List<ProductResponseDto>>> GetSimilarProducts(Guid productId)
+         {
+            var result = await _productRecomandation.GetSimilarProducts(productId, 3);
+
+            return Ok(result);
+         }
+
+        [HttpGet("products")]
+        public async Task<ActionResult<List<ProductResponseDto>>> GetProductsByCategory()
+        {
+            var result = await _productService.GetProductsByCategory();
+
+            return Ok(result);
+        }
+
+        [HttpGet("count-products")]
+        public async Task<ActionResult<int>> CountProducts()
+        {
+            var result = await _productService.CountProduts();
+
+            return Ok(result);
+        }
+
+        [HttpGet("products-by-category")]
+        public async Task<ActionResult<List<ProductAndCategory>>> GetProductCountByCategoryAsync()
+        {
+            var result = await _productService.GetProductCountByCategoryAsync();
+
+            return Ok(result);
         }
     }
 }

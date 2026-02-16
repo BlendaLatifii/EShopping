@@ -3,6 +3,7 @@ import { AddProductRequestDto } from "../Interfaces/Product/add-product-dto";
 import { ProductResponseDto } from "../Interfaces/Product/product-response-dto";
 import { UpdateProductRequestDto } from "../Interfaces/Product/update-product-dto";
 import { ListItemModel } from "../Interfaces/listItemModel";
+import { ProductAndCategory } from "../Interfaces/Product/ProductAndCategory";
 
 export class ProductService {
 
@@ -65,5 +66,25 @@ public static async GetProductByCategory(categoryId : string) : Promise<ProductR
  public static async GetSelectList(): Promise<ListItemModel[]>{
    const result = await axios.get<ListItemModel[]>(`${this.BaseUrl}/GetProductSelectList`);
    return result.data;
+ }
+
+ public static async GetSimilarProducts(productId : string) : Promise<ProductResponseDto[]>{
+  const result = await axios.get(`${this.BaseUrl}/recommendation/${productId}`);
+  return result.data;
+ }
+
+ public static async GetProductsByCategory() : Promise<ProductResponseDto[]>{
+ const result = await axios.get(`${this.BaseUrl}/products`);
+ return result.data;
+ }
+
+ public static async CountProducts() : Promise<number>{
+  const result = await axios.get(`${this.BaseUrl}/count-products`);
+  return result.data;
+ }
+
+ public static async GetProductCountByCategoryAsync() : Promise<ProductAndCategory[]>{
+  const result = await axios.get(`${this.BaseUrl}/products-by-category`);
+  return result.data;
  }
 }

@@ -2,6 +2,7 @@
 using Application.DTO.Response;
 using Application.Services.Interfaces;
 using Domain.Entities;
+using Infrastructure.Repositories;
 using Infrastructure.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -46,6 +47,12 @@ namespace Application.Services
             return model;
         }
 
+        public async Task<int> CountCategories()
+        {
+            var numberOfCategories = await _categoryRepository.Query().CountAsync();
+
+            return numberOfCategories;
+        }
         public async Task UpdateCategory(Guid id, UpdateCategoryRequestDto updateCategoryRequestDto)
         {
             var category = await _categoryRepository.GetByIdAsync(id, CancellationToken.None);

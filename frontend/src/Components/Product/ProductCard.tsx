@@ -25,7 +25,6 @@ export default function ProductCard({ product }: { product: ProductResponseDto})
 
       <div className="product-info">
         <h6>{product.name}</h6>
-        <p>{product.description}</p>
         <span>${product.price.toFixed(2)}</span>
 
         <button

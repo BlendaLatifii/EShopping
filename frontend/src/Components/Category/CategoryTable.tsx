@@ -4,6 +4,7 @@ import { CategoryResponseDto } from "../../Interfaces/Category/category-response
 import { CategoryService } from "../../Services/CategoryService.ts";
 import AddCategoryModal from "./AddCategory.tsx";
 import EditCategoryModal from "./EditCategoryModal.tsx";
+import { AuthService } from "../../Services/AuthService.ts";
 
 
 export default function CategoryTable() {
@@ -30,10 +31,10 @@ export default function CategoryTable() {
     setOpenConfirm(false);
     setDeleteCategoryId("");
   }
+   const isAdmin = AuthService.isAdmin();
 
   return (
     <Fragment>
-  <Header />
   <div className="mt-5 d-flex justify-content-between align-items-center px-4">
     <h2>Categories</h2>
 

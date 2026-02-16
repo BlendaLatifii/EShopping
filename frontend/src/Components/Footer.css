@@ -1,0 +1,23 @@
+.footer-section {
+  background-color: #091d3c; /* blu e errët për footer */
+  color: #ffffff; /* tekst i bardhë për kontrast */
+  padding: 40px 0;
+}
+
+.footer-section a.footer-link {
+  color: #ffffff;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.footer-section a.footer-link:hover {
+  color: #66a3d2; /* blu e çelët kur hover */
+}
+
+.footer-section h6 {
+  color: #ffffff;
+}
+
+.footer-section p {
+  color: #ffffff;
+}

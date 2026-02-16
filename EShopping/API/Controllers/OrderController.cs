@@ -1,4 +1,5 @@
 ﻿using Application.DTO.Response;
+using Application.Services;
 using Application.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -46,6 +47,22 @@ namespace API.Controllers
             await _orderService.DeleteOrder(id);
 
             return Ok();
+        }
+
+        [HttpGet("count-orders")]
+        public async Task<ActionResult<int>> CountOrders()
+        {
+            var result = await _orderService.CountOrders();
+
+            return Ok(result);
+        }
+
+        [HttpGet("daily-sales")]
+        public async Task<ActionResult<List<DailySalesDto>>> GetDailySalesAsync()
+        {
+            var result = await _orderService.GetDailySalesAsync();
+
+            return Ok(result);
         }
     }
 }

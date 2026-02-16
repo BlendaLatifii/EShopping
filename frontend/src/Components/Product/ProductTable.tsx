@@ -2,10 +2,7 @@ import { Fragment, useEffect, useState } from "react";
 import { ProductResponseDto } from "../../Interfaces/Product/product-response-dto.ts";
 import { ProductService } from "../../Services/ProductService.ts";
 import AddProduct from "./AddProduct.tsx";
-import { useNavigate } from "react-router-dom";
 import EditProductModal from "./EditProductModal.tsx";
-import Header from "../Header.tsx";
-import Footer from "../Footer.tsx";
 
 export default function ProductTable(){
 
@@ -35,7 +32,6 @@ export default function ProductTable(){
     
     return (
        <Fragment>
-        <Header/>
          <div className="mt-5 d-flex justify-content-between align-items-center px-4">
     <h2>Products</h2>
 
@@ -50,6 +46,7 @@ export default function ProductTable(){
        <table className="table table-striped table-hover">
       <thead className="table-light">
         <tr>
+          <th>Image</th>
           <th>Name</th>
           <th>Description</th>
           <th>Price</th>
@@ -61,6 +58,13 @@ export default function ProductTable(){
       <tbody>
         {products.map((item) => (
           <tr key={item.id}>
+            <td>
+           <img
+            src={item.imageUrl ? `https://localhost:7147/${item.imageUrl.split(",")[0]}` : "/images/no-image.png"}
+            alt={item.name}
+            style={{ width: "60px", height: "60px", objectFit: "cover", borderRadius: "5px" }}
+           />
+           </td>
             <td>{item.name}</td>
             <td>{item.description}</td>
             <td>{item.price}</td>
@@ -141,7 +145,6 @@ export default function ProductTable(){
     )}
     <br/>
     <br/>
-    <Footer/>
         </Fragment>
     );
 }

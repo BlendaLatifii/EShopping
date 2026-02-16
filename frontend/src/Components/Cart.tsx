@@ -52,7 +52,6 @@ export default function Cart() {
   if (!cart || cart.items.length === 0) {
     return (
       <>
-        <Header />
         <div className="container mt-5 text-center">
           <h3>Your cart is empty 😕</h3>
         </div>
@@ -62,7 +61,6 @@ export default function Cart() {
 
   return (
     <>
-      <Header />
      <div className="page-bg">
   <div className="container cart-container">
     <div className="row">
@@ -182,8 +180,6 @@ export default function Cart() {
     </div>
   </div>
 </div>
-
-<Footer/>
     </>
   );
 }

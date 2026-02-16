@@ -71,6 +71,13 @@ namespace Application.Services
             return model;
         }
 
+        public async Task<int> CountUsers()
+        {
+            var numberOfUsers = await _userRepository.Query().CountAsync();
+
+            return numberOfUsers;
+        }
+
         public async Task SignIn(SignInRequestDto userRequestDto)
         {
             var user = MapSignInUser(userRequestDto);
@@ -153,11 +160,11 @@ namespace Application.Services
 
             await _resetPasswordRepository.AddAsync(resetPasswordEntry, CancellationToken.None);
             var resetLink = $"http://localhost:3000/reset-password?token={Uri.EscapeDataString(resetToken)}";
-            var body = $@"Kliko linkun për reset password:
+            var body = $@"Click the link to reset password:
                            <br/>
                             <a href='{resetLink}'>Reset Password</a>
                             <br/>
-                          Ky link skadon pas 10 minutash.";
+                          This link expires in 10 minutes.";
 
             await _emailService.SendEmailAsync(user.Email,"Reset Password", body);
         } 

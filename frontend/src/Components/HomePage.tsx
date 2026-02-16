@@ -1,26 +1,32 @@
 import { useEffect, useState } from "react";
-import Header from "./Header.tsx";
 import "./HomePage.css";
 import { Link } from "react-router-dom";
 import { CategoryResponseDto } from "../Interfaces/Category/category-response-dto.ts";
 import { CategoryService } from "../Services/CategoryService.ts";
-import Footer from "./Footer.tsx";
+import { ProductResponseDto } from "../Interfaces/Product/product-response-dto.ts";
+import { ProductService } from "../Services/ProductService.ts";
 
 export default function Home() {
     const[categories, setCategories] = useState<CategoryResponseDto[]>([]); 
+    const[products, setProducts] = useState<ProductResponseDto[]>([]);
 
     const fetchData= async () => {
      const category = await CategoryService.GetAllCategories();
      setCategories(category);
     }
+    
+    const fetchProducts = async() =>{
+       const product = await ProductService.GetProductsByCategory();
+       setProducts(product);
+    }
 
     useEffect(() => {
       fetchData();
+      fetchProducts();
     }, []);
     
   return (
     <>
-      <Header />
 
       <section className="hero">
         <div className="container text-center">
@@ -48,21 +54,22 @@ export default function Home() {
         </div>
       </section>
 
-      {/* FEATURED PRODUCTS */}
       <section className="bg-light py-5">
         <div className="container">
           <h2 className="section-title">Featured Products</h2>
 
           <div className="row">
-            {[1, 2, 3].map((_, i) => (
+            {products.map((product, i) => (
               <div className="col-md-4 mb-4" key={i}>
                 <div className="product-card">
                   <img
-                    src="/images/no-image.png"
-                    alt="product"
+                    src={product.imageUrl
+                      ? `https://localhost:7147/${product.imageUrl.split(",")[0]}`
+                      : "/images/no-image.png"}
+                    alt={product.name}
                   />
-                  <h5>Product Name</h5>
-                  <p>$99.99</p>
+                  <h5>{product.name}</h5>
+                  <p>{product.description}</p>
                   <button className="btn btn-outline-primary btn-sm">
                     Add to Cart
                   </button>
@@ -75,21 +82,16 @@ export default function Home() {
 
       <section className="container my-5">
         <div className="row text-center">
-          <div className="col-md-4">
-            <h5>🚚 Fast Delivery</h5>
-            <p>Quick and reliable shipping</p>
-          </div>
-          <div className="col-md-4">
+          <div className="col-md-5">
             <h5>🔒 Secure Payments</h5>
             <p>Your data is always safe</p>
           </div>
-          <div className="col-md-4">
+          <div className="col-md-5">
             <h5>⭐ Quality Products</h5>
             <p>Only trusted brands</p>
           </div>
         </div>
       </section>
-      <Footer/>
     </>
   );
 }

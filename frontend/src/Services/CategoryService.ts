@@ -36,4 +36,9 @@ private static BaseUrl = "https://localhost:7147/api/Category";
     const result = await axios.get<ListItemModel[]>(`${this.BaseUrl}/GetCategorySelectList`);
     return result.data;
   }
+  
+  public static async CountCategories() : Promise<number>{
+  const result = await axios.get(`${this.BaseUrl}/count-categories`);
+  return result.data;
+ }
 }

@@ -1,5 +1,6 @@
 ﻿using Application.DTO.Request;
 using Application.DTO.Response;
+using Application.Services;
 using Application.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -61,6 +62,14 @@ namespace API.Controllers
         public async Task<ActionResult<List<ListItemModel>>> GetCategorySelectList()
         {
             var result = await _categoryService.GetCategorySelectList();
+
+            return Ok(result);
+        }
+
+        [HttpGet("count-categories")]
+        public async Task<ActionResult<int>> CountCategories()
+        {
+            var result = await _categoryService.CountCategories();
 
             return Ok(result);
         }

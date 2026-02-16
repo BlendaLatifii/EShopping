@@ -20,7 +20,7 @@ function Login() {
     };
     const response = await AuthService.Login(user);
     console.log(response);
-    navigate("/Category")
+    navigate("/HomePage")
   }
 
    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

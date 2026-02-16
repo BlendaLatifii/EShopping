@@ -36,7 +36,6 @@ async function confirmedDeletePaymentMethod(id:string)
 
     return (
         <>
-        <Header/>
          <div className="mt-5 d-flex justify-content-between align-items-center px-4">
            <h2>PaymentMethods</h2>
 
@@ -135,7 +134,6 @@ async function confirmedDeletePaymentMethod(id:string)
       </div>
     </div>
    )}
-   <Footer/>
         </>
     );
 }

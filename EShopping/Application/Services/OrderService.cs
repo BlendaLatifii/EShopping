@@ -1,7 +1,9 @@
 ﻿using Application.DTO.Response;
 using Application.Services.Interfaces;
 using Domain.Entities;
+using Infrastructure.Repositories;
 using Infrastructure.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.Services
 {
@@ -81,5 +83,27 @@ namespace Application.Services
                 TotalAmmount = order.Items.Sum(x => (x.Product.Price * x.Quantity))
             };
         }
+
+        public async Task<int> CountOrders()
+        {
+            var numberOfOrders = await _orderRepository.Query().CountAsync();
+
+            return numberOfOrders;
+        }
+
+        public async Task<List<DailySalesDto>> GetDailySalesAsync()
+        {
+            return await _orderRepository.Query()
+                .GroupBy(o => o.OrderTime.Date)
+                .Select(g => new DailySalesDto
+                {
+                    Date = g.Key,
+                    TotalSales = g.Sum(x => x.TotalAmount),
+                    OrdersCount = g.Count()
+                })
+                .OrderBy(x => x.Date)
+                .ToListAsync();
+        }
+
     }
 }

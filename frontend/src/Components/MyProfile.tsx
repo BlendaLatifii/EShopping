@@ -1,10 +1,8 @@
 import { useEffect, useState } from "react";
 import { UserResponseDto } from "../Interfaces/User/user-response-dto.ts";
 import { AuthService } from "../Services/AuthService.ts";
-import Header from "./Header.tsx";
 import { FaUser, FaEnvelope, FaPhone } from "react-icons/fa";
 import "./MyProfile.css";
-import Footer from "./Footer.tsx";
 
 export default function MyProfile() {
   const [user, setUser] = useState<UserResponseDto>();
@@ -22,7 +20,6 @@ export default function MyProfile() {
 
   return (
     <>
-      <Header />
 
       <div className="profile-page">
         <div className="profile-card">
@@ -47,7 +44,6 @@ export default function MyProfile() {
           </div>
         </div>
       </div>
-      <Footer/>
     </>
   );
 }

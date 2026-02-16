@@ -21,7 +21,6 @@ namespace Infrastructure
             services.AddScoped<ICartRepository, CartRepository>();
             services.AddScoped<IOrderRepository, OrderRepository>();
             services.AddScoped<IOrderItemRepository, OrderItemRepository>();
-            services.AddScoped<IViewsRepository, ViewsRepository>();
             services.AddScoped<IPaymentRepository, PaymentRepository>();
         }
     }

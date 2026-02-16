@@ -100,10 +100,11 @@ export default function ResetPassword() {
             required
           />
         </Form.Group>
-
+       <div className="text-end">
         <Button variant="primary" type="submit">
           Reset Password
         </Button>
+        </div>
       </Form>
     </div>
     </div>

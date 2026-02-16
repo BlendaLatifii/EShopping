@@ -108,4 +108,9 @@ public static async GetSelectList(): Promise<ListItemModel[]>{
   const result = await axios.get<ListItemModel[]>(`${this.BaseUrl}/get-role-select-list`);
    return result.data;
 }
+
+public static async CountUsers() : Promise<number>{
+  const result = await axios.get(`${this.BaseUrl}/count-users`);
+  return result.data;
+ }
 }

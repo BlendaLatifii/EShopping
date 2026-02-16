@@ -1,19 +1,17 @@
 .main-content {
-  padding: 20px;
-  margin-top: 60px; /* header height */
   transition: margin-left 0.3s;
 }
 
 .with-sidebar {
-  margin-left: 250px; 
+  margin-left: 250px;
 }
 .admin-sidebar {
-  height: 100vh;
-  background-color: #1e293b;
-  color: white;
   position: absolute;
   left: 0;
-  top: 60px;
+  width: 250px;
+  height: calc(100vh - 60px);
+  background-color: #091d3c ;
+  color: white;
   padding: 20px;
   z-index: 1000;
 }

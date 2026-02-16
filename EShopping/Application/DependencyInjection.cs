@@ -25,6 +25,7 @@ namespace Application
             services.AddScoped<IRoleService, RoleService>();
             services.AddScoped<IPaymentService, PaymentService>();
             services.AddScoped<IEmailService, EmailService>();
+            services.AddScoped<IProductRecomandationService, ProductRecomandationService>();
         }
     }
 }

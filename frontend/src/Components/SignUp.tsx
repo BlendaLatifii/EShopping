@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Form, Button, Container, Row, Col } from 'react-bootstrap';
 import { AuthService } from '../Services/AuthService.ts';
 import { SignInRequestDto } from '../Interfaces/User/Signin-dto.ts';
+import { useNavigate } from 'react-router-dom';
 
 function SignUp() {
   const [formData, setFormData] = useState<SignInRequestDto>({
@@ -13,6 +14,7 @@ function SignUp() {
     confirmPassword : ""
   });
 
+  const navigate = useNavigate();
  async function submitForm(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     var user: SignInRequestDto = {
@@ -23,7 +25,8 @@ function SignUp() {
       password: formData.password,
       confirmPassword : formData.confirmPassword
     };
-    const response = await AuthService.SignIn(user);
+     await AuthService.SignIn(user);
+    navigate("/");
   }
 
    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
