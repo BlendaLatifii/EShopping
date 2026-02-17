@@ -22,10 +22,14 @@ const AddOrderStatusModal: React.FC<Props> = ({
 
   const [loading, setLoading] = useState(false);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
+ const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const { name, type, value, checked } = e.target;
+
+  setFormData({
+    ...formData,
+    [name]: type === "checkbox" ? checked : value
+  });
+};
 
   const submitForm = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

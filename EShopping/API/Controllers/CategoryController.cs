@@ -1,6 +1,5 @@
 ﻿using Application.DTO.Request;
 using Application.DTO.Response;
-using Application.Services;
 using Application.Services.Interfaces;
 using Infrastructure.Repositories.Seeds;
 using Microsoft.AspNetCore.Authorization;
