@@ -6,12 +6,14 @@ namespace Application.Services
 {
     public class IdentityService : IIdentityService
     {
+
         private readonly ClaimsPrincipal claimsPrincipal;
 
         public IdentityService(IHttpContextAccessor httpContextAccessor)
         {
             this.claimsPrincipal = httpContextAccessor.HttpContext?.User ?? new ClaimsPrincipal();
         }
+
         public Guid GetCurrentUserId()
         {
             string? id = claimsPrincipal?.FindFirst(ClaimTypes.NameIdentifier)?.Value;

@@ -1,7 +1,6 @@
 ﻿using Application.DTO.Response;
 using Application.Services.Interfaces;
 using Domain.Entities;
-using Infrastructure.Repositories;
 using Infrastructure.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -50,6 +49,10 @@ namespace Application.Services
         public async Task<OrderResponseDto> GetOrderById(Guid id)
         {
             var order = await _orderRepository.GetByIdAsync(id, CancellationToken.None);
+            if(order == null)
+            {
+                throw new Exception("Order is null");
+            }
 
             var model = MapToDto(order);
 

@@ -9,17 +9,13 @@ namespace Application.Services
 
         private readonly ICartRepository _cartRepository;
         private readonly IIdentityService _identityService;
-        private readonly IOrderService _orderService;
         
-        public CartService(ICartRepository cartRepository, IIdentityService identityService, IOrderService orderService) 
+        public CartService(ICartRepository cartRepository, IIdentityService identityService) 
         { 
             _cartRepository = cartRepository;
             _identityService = identityService;
-            _orderService = orderService;
         }
 
-        //duhet me u kthy cartdto edhe orderresponseDto 
-        //me u thirr edhe dy metodat cart e order 
         public async Task<CartDto> GetCartAsync() 
         {
             var userId = _identityService.GetCurrentUserId();

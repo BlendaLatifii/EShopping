@@ -6,5 +6,4 @@
         public decimal TotalSales { get; set; }
         public int OrdersCount { get; set; }
     }
-
 }

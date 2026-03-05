@@ -4,6 +4,6 @@
     {
         public Guid CategoryId { get; set; }
         public int NumberOfProducts { get; set; }
-        public string CategoryName { get; set; }
+        public string CategoryName { get; set; } = string.Empty;
     }
 }

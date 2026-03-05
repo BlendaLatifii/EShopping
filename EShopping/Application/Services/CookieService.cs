@@ -5,6 +5,7 @@ namespace Application.Services
 {
     public class CookieService : ICookieService
     {
+
         private readonly IHttpContextAccessor _httpContextAccessor;
 
         public CookieService(IHttpContextAccessor httpContextAccessor)

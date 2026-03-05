@@ -4,8 +4,8 @@
     {
         public Guid PaymentMethodId { get; set; }
         public Guid OrderId { get; set; }
-        public string CartNumber { get; set; }
-        public string CVV { get; set; }
+        public string CartNumber { get; set; } = string.Empty;
+        public string CVV { get; set; } = string.Empty;
         public decimal Amount { get; set; }
     }
 }

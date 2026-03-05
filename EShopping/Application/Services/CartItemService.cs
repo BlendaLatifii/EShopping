@@ -3,7 +3,6 @@ using Application.DTO.Response;
 using Application.Services.Interfaces;
 using Domain.Entities;
 using Infrastructure.Repositories.Interfaces;
-using Microsoft.Identity.Client;
 
 namespace Application.Services
 {
@@ -108,7 +107,6 @@ namespace Application.Services
             return cartItem;
         }
 
-        //kur te fshihet prej cartitem me u fshi edhe prej order 
         public async Task DeleteCartItem(Guid id)
         {
             var userId = _identityService.GetCurrentUserId();

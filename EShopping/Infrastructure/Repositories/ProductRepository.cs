@@ -25,12 +25,12 @@ namespace Infrastructure.Repositories
         }
 
        public async Task<List<Product>> GetProductByCategory()
-        {
+       {
             return await  _dbSet
                      .Include(p => p.Category)
                      .GroupBy(p => p.CategoryId)
                      .Select(g => g.First()) 
                      .ToListAsync();
-        }
+       }
     }
 }

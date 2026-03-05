@@ -5,9 +5,9 @@
         public Guid Id { get; set; }
         public DateTime OrderTime { get; set; }
         public Guid UserId { get; set; }
-        public User User { get; set; }
+        public User User { get; set; } = null!;
         public Guid OrderStatusId { get; set; }
-        public OrderStatus OrderStatus { get; set; }
+        public OrderStatus OrderStatus { get; set; } = null!;
         public decimal TotalAmount { get; set; }
         public List<OrderItem> Items { get; set; } = new List<OrderItem>();
     }

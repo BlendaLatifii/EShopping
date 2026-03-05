@@ -4,7 +4,6 @@ using Application.Services.Interfaces;
 using Domain.Entities;
 using Infrastructure.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Identity.Client;
 
 namespace Application.Services
 {
@@ -239,7 +238,5 @@ namespace Application.Services
 
             return result;
         }
-
-
     }
 }
